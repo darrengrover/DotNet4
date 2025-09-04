@@ -1,0 +1,72 @@
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Sandpit\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Sandpit\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Sandpit\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.pdb
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Sandpit\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Sandpit\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Sandpit\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Sandpit\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.pdb
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Sandpit\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Sandpit\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.pdb
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac - Working\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac - Working\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.pdb
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac - Working\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac - Working\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac - Working\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac - Working\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.pdb
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac - Working\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac - Working\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac - Working\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.pdb
+C:\Ge-Mac\Contracts\Version Controlled\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\ResolveAssemblyReference.cache
+C:\Ge-Mac\Contracts\Version Controlled\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.pdb
+C:\Ge-Mac\Contracts\Version Controlled\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.dll
+C:\Ge-Mac\Contracts\Version Controlled\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.pdb
+C:\Ge-Mac\Contracts\Version Controlled\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.dll
+C:\Ge-Mac\Contracts\Version Controlled\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\Ge-Mac\Contracts\Version Controlled\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\Ge-Mac\Contracts\Version Controlled\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.pdb
+C:\Ge-Mac\Contracts\Version Controlled\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.pdb
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.pdb
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.dll
+C:\Users\gcailes.GE-MAC\Documents\Visual Studio 2008\Projects\Ge-Mac\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.pdb
+C:\Ge-Mac\SubVersion\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.dll
+C:\Ge-Mac\SubVersion\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.pdb
+C:\Ge-Mac\SubVersion\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.dll
+C:\Ge-Mac\SubVersion\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\Ge-Mac\SubVersion\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\Ge-Mac\SubVersion\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.pdb
+C:\Ge-Mac\SubVersion\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\ResolveAssemblyReference.cache
+C:\Ge-Mac\SubVersion\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.dll
+C:\Ge-Mac\SubVersion\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Legacy\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Legacy\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Legacy\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Legacy\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Legacy\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Legacy\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Legacy\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Legacy\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Legacy\RailExplorerII\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\DotNet4\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\DotNet4\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.Settings.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\DotNet4\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\DotNet4\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\DotNet4\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.DataLayer.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\DotNet4\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\bin\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\DotNet4\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\DotNet4\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.dll
+C:\Users\Gary Cailes\Documents\Visual Studio 2010\Projects\Ge-Mac\DotNet4\Libraries\Ge_Mac.Settings\Ge_Mac.Settings\obj\Debug\Ge_Mac.Settings.pdb
