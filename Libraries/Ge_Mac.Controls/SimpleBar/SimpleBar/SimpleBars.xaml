@@ -1,0 +1,16 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="SimpleBars.SimpleBar"
+	x:Name="SimpleBars" Height="Auto" Width="Auto" SizeChanged="SimpleBars_SizeChanged" Loaded="SimpleBars_Loaded">
+
+	<Grid x:Name="LayoutRoot">
+        <Rectangle x:Name="rectBackground" Fill="#FFF4F4F5" Margin="0" />
+		<Rectangle x:Name="rectSlider" Fill="#FFFFAF00" Margin="0" Panel.ZIndex="1" VerticalAlignment="Bottom" Height="50" HorizontalAlignment="Left" Width="100" Loaded="rectSlider_Loaded" />
+        <Label Content="" Height="Auto" HorizontalAlignment="Center" Margin="0" Name="lblData" VerticalAlignment="Center" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Panel.ZIndex="2" />
+        <Rectangle Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="rectOutline" Stroke="Black" VerticalAlignment="Stretch" Width="Auto" Panel.ZIndex="2" />
+    </Grid>
+</UserControl>

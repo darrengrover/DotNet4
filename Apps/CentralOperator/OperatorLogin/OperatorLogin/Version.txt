@@ -1,0 +1,2 @@
+﻿Version 1.1.6
+Change to gemac.tagreaders library location.  This is to allow the tcp tag reader service to share the library.

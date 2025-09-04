@@ -1,0 +1,66 @@
+﻿<Window x:Class="OperatorLogin.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Operator Login" Height="800" Width="1086" 
+        xmlns:my="clr-namespace:GraphicSurface;assembly=GraphicSurface" Loaded="Window_Loaded" 
+        SizeChanged="Window_SizeChanged" WindowState="Maximized" WindowStyle="None" Closing="Window_Closing">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="6" />
+            <ColumnDefinition Width="109*" />
+            <ColumnDefinition Width="295*" />
+            <ColumnDefinition Width="109*" />
+            <ColumnDefinition Width="210*" />
+            <ColumnDefinition Width="109*" />
+            <ColumnDefinition Width="50*" />
+            <ColumnDefinition Width="84*" />
+            <ColumnDefinition Width="42*" />
+            <ColumnDefinition Width="42*" />
+            <ColumnDefinition Width="6" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32*" />
+            <RowDefinition Height="226*" />
+            <RowDefinition Height="187*" />
+            <RowDefinition Height="45" />
+        </Grid.RowDefinitions>
+        <ComboBox Height="Auto" HorizontalAlignment="Stretch" Margin="8" Name="cbxOperators" VerticalAlignment="Stretch" Width="Auto" Grid.Column="2" ItemsSource="{Binding}" FontSize="24" FontWeight="Normal" SelectionChanged="cbxOperators_SelectionChanged" Panel.ZIndex="2" VerticalContentAlignment="Center" DropDownOpened="cbxOperators_DropDownOpened" />
+        <Label Content="Operator" Margin="0,8" Name="lblOperator" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontSize="20" Grid.Column="1" Panel.ZIndex="2" Foreground="White" MouseDown="lblOperator_MouseDown" />
+        <Label Content="Station" HorizontalContentAlignment="Right" Margin="0,8" Name="lblStation" VerticalContentAlignment="Center" Grid.Column="3" FontSize="20" Panel.ZIndex="2" Foreground="White" />
+        <my:Surface Grid.ColumnSpan="9" Grid.Row="1" HorizontalAlignment="Stretch" Name="surface" VerticalAlignment="Stretch" Height="Auto" Grid.RowSpan="2" 
+                    Panel.ZIndex="3" Grid.Column="1" />
+        <Rectangle Grid.ColumnSpan="9" Grid.Row="1" Grid.RowSpan="2" Height="Auto" HorizontalAlignment="Stretch" Name="rectEvents" Stroke="Black" 
+                   VerticalAlignment="Stretch" Panel.ZIndex="4" Fill="#00000000" PreviewMouseWheel="rectEvents_PreviewMouseWheel" 
+                   MouseMove="rectEvents_MouseMove" MouseDown="rectEvents_MouseDown" Grid.Column="1" TouchDown="rectEvents_TouchDown" TouchMove="rectEvents_TouchMove" />
+        <Button Content="Tags" Height="Auto" HorizontalAlignment="Stretch" Margin="0,8,8,8" Name="btnTags" VerticalAlignment="Stretch" Width="Auto" Grid.Column="7" Click="btnTags_Click" Panel.ZIndex="2" Grid.ColumnSpan="1" FontSize="20" IsTabStop="False" />
+        <Button Content="X" Grid.Column="9" Height="Auto" HorizontalAlignment="Stretch" Margin="4,8,0,8" Name="btnExit" VerticalAlignment="Stretch" Click="btnExit_Click" Panel.ZIndex="2" Foreground="White" FontWeight="Normal" FontStretch="Expanded" FontSize="24" Width="Auto">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFDD2525" Offset="0.449" />
+                    <GradientStop Color="#FFF7CECE" Offset="0" />
+                    <GradientStop Color="#FFA22525" Offset="0.638" />
+                    <GradientStop Color="#FFB93030" Offset="0.98" />
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Image Grid.Row="3" Height="45" HorizontalAlignment="Right" Margin="0,0,4,0" Name="image1" Stretch="Uniform" VerticalAlignment="Bottom" Width="173" Source="/OperatorLogin;component/JensenCockpitLogoSmall.png" Grid.Column="6" Grid.ColumnSpan="4" Panel.ZIndex="1" />
+        <Label Content="Version 0.0.0.00000" Grid.Row="3" Name="lblVersion" HorizontalContentAlignment="Center" Height="30" VerticalAlignment="Bottom" Grid.ColumnSpan="10" Panel.ZIndex="3" Foreground="White" FontSize="14" />
+        <Rectangle Grid.ColumnSpan="11" Height="Auto" HorizontalAlignment="Stretch" Name="rectBackground" Stroke="{x:Null}" VerticalAlignment="Stretch" Width="Auto" Fill="#FF005B8A" Grid.RowSpan="4" Panel.ZIndex="0" />
+        <Rectangle Grid.ColumnSpan="9" Grid.RowSpan="2" Height="Auto" HorizontalAlignment="Stretch" Name="rectSurfaceBackground" Panel.ZIndex="2" Stroke="Black" VerticalAlignment="Stretch" Grid.Row="1" Fill="White" Grid.Column="1"></Rectangle>
+        <Label Content="00:00 01 January 2012" FontStretch="Normal" Grid.ColumnSpan="10" Name="LabelTime" Padding="0" VerticalContentAlignment="Top" Width="Auto" Grid.Row="3" Foreground="White" FontSize="14" HorizontalContentAlignment="Center" Margin="0,0,0,20" Panel.ZIndex="3" />
+        <Label Content="Terminal Name" FontSize="18" Foreground="White" Grid.Column="1" Grid.ColumnSpan="2" Height="40" HorizontalContentAlignment="Left" Margin="0" Name="lblTerminalName" Panel.ZIndex="3" VerticalAlignment="Top" Grid.Row="3" FontWeight="Bold" MouseDown="lblTerminalName_MouseDown" />
+        <Button Content="2" FontSize="26" FontStretch="Expanded" FontWeight="Normal" Foreground="#FFF0F0F0" Grid.Column="8" Height="Auto" HorizontalAlignment="Stretch" Margin="0,8,4,8" Name="btnMinimise" Panel.ZIndex="2" VerticalAlignment="Stretch" Width="Auto" Click="btnMinimise_Click" IsTabStop="False" FontFamily="Marlett">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF3283D7" Offset="1" />
+                    <GradientStop Color="#FFD0EFFE" Offset="0" />
+                    <GradientStop Color="#FF33A6DD" Offset="0.444" />
+                    <GradientStop Color="#FF1277C3" Offset="0.628" />
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Label Content="." FontSize="20" Foreground="White" Grid.Column="4" HorizontalContentAlignment="Stretch" Margin="1,8,0,8" Name="lblStnName" Panel.ZIndex="2" VerticalContentAlignment="Center" FontWeight="Bold" Grid.ColumnSpan="3" />
+        <Rectangle Grid.ColumnSpan="11" Grid.RowSpan="4" Height="Auto" HorizontalAlignment="Stretch" Name="rectRed" Stroke="Black" VerticalAlignment="Stretch" Width="Auto" Panel.ZIndex="1" Fill="Red" Visibility="Collapsed" />
+        <ListBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Height="100" HorizontalAlignment="Left" Margin="0,217,0,0" Name="lbxTerminals" VerticalAlignment="Bottom" Width="332" Grid.RowSpan="2" Panel.ZIndex="5" SelectionChanged="lbxTerminals_SelectionChanged" FontSize="18" Visibility="Collapsed" />
+    </Grid>
+</Window>

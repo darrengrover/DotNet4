@@ -1,0 +1,25 @@
+﻿<Window x:Class="CentralLoginUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="457" Width="814"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170" />
+            <ColumnDefinition Width="313*" />
+        </Grid.ColumnDefinitions>
+        <Button Content="Start" Height="50" HorizontalAlignment="Left" Margin="12,12,0,0" Name="btnStart" VerticalAlignment="Top" Width="150" FontSize="16" Click="btnStart_Click" />
+        <Button Content="Stop" Height="50" HorizontalAlignment="Left" Margin="12,68,0,0" Name="btnStop" VerticalAlignment="Top" Width="150" FontSize="16" Click="btnStop_Click" />
+        <Button Content="Pause" Height="50" HorizontalAlignment="Left" Margin="12,124,0,0" Name="btnPause" VerticalAlignment="Top" Width="150" FontSize="16" Click="btnPause_Click"/>
+        <Button Content="Resume" Height="50" HorizontalAlignment="Left" Margin="12,180,0,0" Name="btnResume" VerticalAlignment="Top" Width="150" FontSize="16" Click="btnResume_Click"/>
+        <Button Content="Ping Readers" FontSize="16" Height="50" HorizontalAlignment="Left" Margin="12,0,0,34" Name="btnPing" VerticalAlignment="Bottom" Width="150" Click="btnPing_Click" />
+        <CheckBox Content="Debug" Height="16" HorizontalAlignment="Left" Margin="12,0,0,12" Name="chkDebug" VerticalAlignment="Bottom" Checked="chkDebug_Checked" Width="150" IsChecked="True" />
+        <ScrollViewer Grid.Column="1" Margin="0,12,12,12" Name="ScrollView">
+            
+        <TextBlock Grid.Column="1" Margin="0" Name="txtFeedback" Text="" Padding="0" TextWrapping="Wrap" Height="Auto" Width="Auto" Background="#FFE4EEFF" />
+        </ScrollViewer>
+        <Button Content="Test Autologout" Height="23" HorizontalAlignment="Left" Margin="12,264,0,0" Name="btnAutoLogout" VerticalAlignment="Top" Width="150" Click="btnAutoLogout_Click" />
+        <Button Content="Clear" Height="23" HorizontalAlignment="Left" Margin="12,293,0,0" Name="btnClear" VerticalAlignment="Top" Width="150" Click="btnClear_Click" />
+        <Button Content="Reload Data" Height="23" HorizontalAlignment="Left" Margin="12,236,0,0" Name="btnReload" VerticalAlignment="Top" Width="150" Click="btnReload_Click" />
+    </Grid>
+</Window>
