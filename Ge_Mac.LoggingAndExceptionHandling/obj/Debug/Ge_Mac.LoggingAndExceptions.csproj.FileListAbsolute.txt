@@ -1,0 +1,9 @@
+C:\SVN\LegacyDotNet3.5\Ge_Mac.LoggingAndExceptionHandling\bin\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\SVN\LegacyDotNet3.5\Ge_Mac.LoggingAndExceptionHandling\bin\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\SVN\LegacyDotNet3.5\Ge_Mac.LoggingAndExceptionHandling\obj\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\SVN\LegacyDotNet3.5\Ge_Mac.LoggingAndExceptionHandling\obj\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\Users\Darren Grover\Documents\Contracts\VisualStudio\LegacyDotNet3.5\Ge_Mac.LoggingAndExceptionHandling\bin\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\Users\Darren Grover\Documents\Contracts\VisualStudio\LegacyDotNet3.5\Ge_Mac.LoggingAndExceptionHandling\bin\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\Users\Darren Grover\Documents\Contracts\VisualStudio\LegacyDotNet3.5\Ge_Mac.LoggingAndExceptionHandling\obj\Debug\Ge_Mac.LoggingAndExceptions.dll
+C:\Users\Darren Grover\Documents\Contracts\VisualStudio\LegacyDotNet3.5\Ge_Mac.LoggingAndExceptionHandling\obj\Debug\Ge_Mac.LoggingAndExceptions.pdb
+C:\SVN\LegacyDotNet3.5\Ge_Mac.LoggingAndExceptionHandling\obj\Debug\Ge_Mac.LoggingAndExceptions.csprojResolveAssemblyReference.cache
