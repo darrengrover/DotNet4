@@ -21,7 +21,7 @@ namespace CentralLoginService
         public Cockpit_Central_Operator()
         {
             InitializeComponent();
-            ServiceName = "Disney_Central_Operator";
+            ServiceName = "Cockpit_Central_Operator";
             CanStop = true;
             CanPauseAndContinue = true;
             CanHandleSessionChangeEvent = true;

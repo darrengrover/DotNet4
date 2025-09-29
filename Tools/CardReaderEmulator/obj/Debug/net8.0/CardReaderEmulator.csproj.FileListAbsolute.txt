@@ -1,0 +1,15 @@
+C:\git\ge-mac\Tools\CardReaderEmulator\bin\Debug\net8.0\CardReaderEmulator.exe
+C:\git\ge-mac\Tools\CardReaderEmulator\bin\Debug\net8.0\CardReaderEmulator.deps.json
+C:\git\ge-mac\Tools\CardReaderEmulator\bin\Debug\net8.0\CardReaderEmulator.runtimeconfig.json
+C:\git\ge-mac\Tools\CardReaderEmulator\bin\Debug\net8.0\CardReaderEmulator.dll
+C:\git\ge-mac\Tools\CardReaderEmulator\bin\Debug\net8.0\CardReaderEmulator.pdb
+C:\git\ge-mac\Tools\CardReaderEmulator\obj\Debug\net8.0\CardReaderEmulator.GeneratedMSBuildEditorConfig.editorconfig
+C:\git\ge-mac\Tools\CardReaderEmulator\obj\Debug\net8.0\CardReaderEmulator.AssemblyInfoInputs.cache
+C:\git\ge-mac\Tools\CardReaderEmulator\obj\Debug\net8.0\CardReaderEmulator.AssemblyInfo.cs
+C:\git\ge-mac\Tools\CardReaderEmulator\obj\Debug\net8.0\CardReaderEmulator.csproj.CoreCompileInputs.cache
+C:\git\ge-mac\Tools\CardReaderEmulator\obj\Debug\net8.0\CardReaderEmulator.sourcelink.json
+C:\git\ge-mac\Tools\CardReaderEmulator\obj\Debug\net8.0\CardReaderEmulator.dll
+C:\git\ge-mac\Tools\CardReaderEmulator\obj\Debug\net8.0\refint\CardReaderEmulator.dll
+C:\git\ge-mac\Tools\CardReaderEmulator\obj\Debug\net8.0\CardReaderEmulator.pdb
+C:\git\ge-mac\Tools\CardReaderEmulator\obj\Debug\net8.0\CardReaderEmulator.genruntimeconfig.cache
+C:\git\ge-mac\Tools\CardReaderEmulator\obj\Debug\net8.0\ref\CardReaderEmulator.dll

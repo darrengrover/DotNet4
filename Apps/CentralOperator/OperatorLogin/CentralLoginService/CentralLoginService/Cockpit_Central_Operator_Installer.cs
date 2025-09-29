@@ -25,9 +25,9 @@ namespace CentralLoginService
             serviceProcessInstaller.Password = null;
 
             //# Service Information
-            serviceInstaller.DisplayName = "Disney Central Login";
+            serviceInstaller.DisplayName = "Cockpit Central Login";
             serviceInstaller.StartType = ServiceStartMode.Automatic;
-            serviceInstaller.ServiceName = "Disney_Central_Operator";
+            serviceInstaller.ServiceName = "Cockpit_Central_Operator";
             serviceInstaller.Description = "Interfaces with RFIdeas card readers";
 
             this.Installers.Add(serviceProcessInstaller);

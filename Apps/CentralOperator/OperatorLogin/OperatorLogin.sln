@@ -1,21 +1,19 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36429.23
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperatorLogin", "OperatorLogin\OperatorLogin.csproj", "{D8978D58-CBD5-4667-A3DE-5111FD04809C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicSurface", "..\..\Libraries\Ge_Mac.Controls\GraphicSurface\GraphicSurface\GraphicSurface.csproj", "{64741116-D7E2-4EF2-9FEA-3A18AF463C8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicSurface", "..\..\..\Libraries\Ge_Mac.Controls\GraphicSurface\GraphicSurface\GraphicSurface.csproj", "{64741116-D7E2-4EF2-9FEA-3A18AF463C8C}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "OperatorLoginSetup", "OperatorLoginSetup\OperatorLoginSetup.vdproj", "{8FC2FC07-5647-4AB2-844D-1C64464283E0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorLog", "..\..\Libraries\Ge_Mac.ErrorLog\ErrorLog\ErrorLog.csproj", "{8632D5AD-4BFE-4C25-8657-E2E5FE95FCF6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorLog", "..\..\..\Libraries\Ge_Mac.ErrorLog\ErrorLog\ErrorLog.csproj", "{8632D5AD-4BFE-4C25-8657-E2E5FE95FCF6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CentralLoginService", "CentralLoginService\CentralLoginService\CentralLoginService.csproj", "{FE3CF027-CC34-4941-9802-D0ABED9E11E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicDataLayer", "..\..\Libraries\DynamicDataLayer\DynamicDataLayer\DynamicDataLayer.csproj", "{96F3F970-B8E4-4CEC-927F-19AE1FD97AE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicDataLayer", "..\..\..\Libraries\DynamicDataLayer\DynamicDataLayer\DynamicDataLayer.csproj", "{96F3F970-B8E4-4CEC-927F-19AE1FD97AE0}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CentralLoginServiceSetup", "CentralLoginServiceSetup\CentralLoginServiceSetup.vdproj", "{AACDCBBF-D54F-4758-8DED-D2BB266CE798}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMHelpers", "..\..\Libraries\MVVMHelpers\MVVMHelpers.csproj", "{F01F92E2-4A49-41BC-9058-CCF8B1E43A0A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMHelpers", "..\..\..\Libraries\MVVMHelpers\MVVMHelpers.csproj", "{F01F92E2-4A49-41BC-9058-CCF8B1E43A0A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPL.TagReaders", "TPL.TagReaders\TPL.TagReaders.csproj", "{A2AFE21B-276D-4050-941D-CA14682E48A2}"
 EndProject
@@ -23,11 +21,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CentralLoginUI", "CentralLo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpLogSvcMgr", "OpLogSvcMgr\OpLogSvcMgr.csproj", "{ADB03298-D44D-4545-BD74-F02946591066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ge_Mac.DataLayer", "..\..\..\LegacyDotNet3.5\Ge_Mac.DataLayer\Ge_Mac.DataLayer.csproj", "{4D286A31-F0A8-4095-8157-509AA411956F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ge_Mac.DataLayer", "..\..\..\..\LegacyDotNet3.5\Ge_Mac.DataLayer\Ge_Mac.DataLayer.csproj", "{4D286A31-F0A8-4095-8157-509AA411956F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ge_Mac.LoggingAndExceptions", "..\..\..\LegacyDotNet3.5\Ge_Mac.LoggingAndExceptionHandling\Ge_Mac.LoggingAndExceptions.csproj", "{2A9C2C09-1048-4E63-BD5D-FEC13DC3EFE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ge_Mac.LoggingAndExceptions", "..\..\..\..\LegacyDotNet3.5\Ge_Mac.LoggingAndExceptionHandling\Ge_Mac.LoggingAndExceptions.csproj", "{2A9C2C09-1048-4E63-BD5D-FEC13DC3EFE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ge_Mac.Settings", "..\..\..\LegacyDotNet3.5\Ge_Mac.Settings\Ge_Mac.Settings\Ge_Mac.Settings.csproj", "{20D79745-A4C6-4937-BF9E-0EA063342534}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ge_Mac.Settings", "..\..\..\..\LegacyDotNet3.5\Ge_Mac.Settings\Ge_Mac.Settings\Ge_Mac.Settings.csproj", "{20D79745-A4C6-4937-BF9E-0EA063342534}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "OperatorLoginSetup", "OperatorLoginSetup\OperatorLoginSetup.vdproj", "{29B58767-67F4-F1B4-E24F-D52283601893}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBars", "..\..\..\Libraries\Ge_Mac.Controls\SimpleBar\SimpleBar\SimpleBars.csproj", "{24091A47-B64C-45A7-9A95-EB497FA3CFD8}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CentralLoginServiceSetup", "CentralLoginServiceSetup\CentralLoginServiceSetup.vdproj", "{83C547E6-86E1-BBF1-773B-27B3B70C1309}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardReaderEmulator", "..\..\..\..\Tools\CardReaderEmulator\CardReaderEmulator.csproj", "{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CentralOperatorShiftEditor", "CentralOperatorShiftEditor\CentralOperatorShiftEditor.csproj", "{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,12 +67,6 @@ Global
 		{64741116-D7E2-4EF2-9FEA-3A18AF463C8C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{64741116-D7E2-4EF2-9FEA-3A18AF463C8C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{64741116-D7E2-4EF2-9FEA-3A18AF463C8C}.Release|x86.ActiveCfg = Release|Any CPU
-		{8FC2FC07-5647-4AB2-844D-1C64464283E0}.Debug|Any CPU.ActiveCfg = Debug
-		{8FC2FC07-5647-4AB2-844D-1C64464283E0}.Debug|Mixed Platforms.ActiveCfg = Debug
-		{8FC2FC07-5647-4AB2-844D-1C64464283E0}.Debug|x86.ActiveCfg = Debug
-		{8FC2FC07-5647-4AB2-844D-1C64464283E0}.Release|Any CPU.ActiveCfg = Release
-		{8FC2FC07-5647-4AB2-844D-1C64464283E0}.Release|Mixed Platforms.ActiveCfg = Release
-		{8FC2FC07-5647-4AB2-844D-1C64464283E0}.Release|x86.ActiveCfg = Release
 		{8632D5AD-4BFE-4C25-8657-E2E5FE95FCF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8632D5AD-4BFE-4C25-8657-E2E5FE95FCF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8632D5AD-4BFE-4C25-8657-E2E5FE95FCF6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -95,12 +97,6 @@ Global
 		{96F3F970-B8E4-4CEC-927F-19AE1FD97AE0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{96F3F970-B8E4-4CEC-927F-19AE1FD97AE0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{96F3F970-B8E4-4CEC-927F-19AE1FD97AE0}.Release|x86.ActiveCfg = Release|Any CPU
-		{AACDCBBF-D54F-4758-8DED-D2BB266CE798}.Debug|Any CPU.ActiveCfg = Debug
-		{AACDCBBF-D54F-4758-8DED-D2BB266CE798}.Debug|Mixed Platforms.ActiveCfg = Debug
-		{AACDCBBF-D54F-4758-8DED-D2BB266CE798}.Debug|x86.ActiveCfg = Debug
-		{AACDCBBF-D54F-4758-8DED-D2BB266CE798}.Release|Any CPU.ActiveCfg = Release
-		{AACDCBBF-D54F-4758-8DED-D2BB266CE798}.Release|Mixed Platforms.ActiveCfg = Release
-		{AACDCBBF-D54F-4758-8DED-D2BB266CE798}.Release|x86.ActiveCfg = Release
 		{F01F92E2-4A49-41BC-9058-CCF8B1E43A0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F01F92E2-4A49-41BC-9058-CCF8B1E43A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F01F92E2-4A49-41BC-9058-CCF8B1E43A0A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -171,8 +167,59 @@ Global
 		{20D79745-A4C6-4937-BF9E-0EA063342534}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{20D79745-A4C6-4937-BF9E-0EA063342534}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{20D79745-A4C6-4937-BF9E-0EA063342534}.Release|x86.ActiveCfg = Release|Any CPU
+		{29B58767-67F4-F1B4-E24F-D52283601893}.Debug|Any CPU.ActiveCfg = Debug
+		{29B58767-67F4-F1B4-E24F-D52283601893}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{29B58767-67F4-F1B4-E24F-D52283601893}.Debug|x86.ActiveCfg = Debug
+		{29B58767-67F4-F1B4-E24F-D52283601893}.Release|Any CPU.ActiveCfg = Release
+		{29B58767-67F4-F1B4-E24F-D52283601893}.Release|Mixed Platforms.ActiveCfg = Release
+		{29B58767-67F4-F1B4-E24F-D52283601893}.Release|x86.ActiveCfg = Release
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Debug|x86.Build.0 = Debug|Any CPU
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Release|x86.ActiveCfg = Release|Any CPU
+		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Release|x86.Build.0 = Release|Any CPU
+		{83C547E6-86E1-BBF1-773B-27B3B70C1309}.Debug|Any CPU.ActiveCfg = Debug
+		{83C547E6-86E1-BBF1-773B-27B3B70C1309}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{83C547E6-86E1-BBF1-773B-27B3B70C1309}.Debug|x86.ActiveCfg = Debug
+		{83C547E6-86E1-BBF1-773B-27B3B70C1309}.Release|Any CPU.ActiveCfg = Release
+		{83C547E6-86E1-BBF1-773B-27B3B70C1309}.Release|Mixed Platforms.ActiveCfg = Release
+		{83C547E6-86E1-BBF1-773B-27B3B70C1309}.Release|x86.ActiveCfg = Release
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Debug|x86.Build.0 = Debug|Any CPU
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Release|x86.ActiveCfg = Release|Any CPU
+		{BC371172-B9C7-3FFB-ACC3-D72D03992CA4}.Release|x86.Build.0 = Release|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Debug|x86.Build.0 = Debug|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Release|x86.ActiveCfg = Release|Any CPU
+		{1B57A38C-D4C5-42D0-A8A3-FA719B70993C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {26117522-C450-4AD3-97A1-D2CD88B09CE0}
 	EndGlobalSection
 EndGlobal
