@@ -1,0 +1,32 @@
+# Build output
+bin/
+obj/
+[Bb]uild/
+artifacts/
+*.dll
+*.pdb
+*.exe
+
+# VS / Rider / tooling
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.idea/
+*.DotSettings.user
+
+# Packages / caches / logs
+packages/
+*.nupkg
+*.snupkg
+*.lock.json
+*.log
+*.cache/
+TestResult*/ 
+.vscode/
+
+# Other common junk
+~$*
+*.tmp
+*.bak
