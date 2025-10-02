@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DbConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ConfigurationEntry Encrypted="false" Name="defaultx"
+  GemacConnectionString="Data Source=172.16.200.100;Initial Catalog=RAIL_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+  JegrConnectionString="Data Source=172.16.200.100;Initial Catalog=JEGR_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+  PublicConnectionString="Data Source=172.16.200.100;Initial Catalog=JEGR_Public;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent" />
+
+  <ConfigurationEntry Encrypted="false" Name="default"
+   GemacConnectionString="Data Source=datacapturetest;Initial Catalog=RAIL_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+   JegrConnectionString="Data Source=datacapturetest;Initial Catalog=JEGR_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+   PublicConnectionString="Data Source=datacapturetest;Initial Catalog=JEGR_Public;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent" />
+  
+
+
+
+</DbConfiguration>
+

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DbConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ConfigurationEntry Encrypted="false" Name="default"
+  GemacConnectionString="Data Source=172.16.200.100;Initial Catalog=RAIL_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+  JegrConnectionString="Data Source=172.16.200.100;Initial Catalog=JEGR_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+  PublicConnectionString="Data Source=172.16.200.100;Initial Catalog=JEGR_Public;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent" />
+
+  <ConfigurationEntry Encrypted="false" Name="kings"
+   GemacConnectionString="Data Source=192.168.0.9\kings;Initial Catalog=RAIL_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+   JegrConnectionString="Data Source=192.168.0.9\kings;Initial Catalog=JEGR_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+   PublicConnectionString="Data Source=192.168.0.9\kings;Initial Catalog=JEGR_Public;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent" />
+  
+  <ConfigurationEntry Encrypted="false" Name="faversham"
+   GemacConnectionString="Data Source=192.168.0.9\faversham;Initial Catalog=RAIL_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+   JegrConnectionString="Data Source=192.168.0.9\faversham;Initial Catalog=JEGR_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+   PublicConnectionString="Data Source=192.168.0.9\faversham;Initial Catalog=JEGR_Public;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent" />
+
+  <ConfigurationEntry Encrypted="false" Name="standard"
+    GemacConnectionString="Data Source=192.168.0.9\dbstandard;Initial Catalog=RAIL_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+    JegrConnectionString="Data Source=192.168.0.9\dbstandard;Initial Catalog=JEGR_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+    PublicConnectionString="Data Source=192.168.0.9\dbstandard;Initial Catalog=JEGR_Public;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent" />
+
+  <ConfigurationEntry Encrypted="false" Name="jockel"
+   GemacConnectionString="Data Source=192.168.0.9\jockel;Initial Catalog=RAIL_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+   JegrConnectionString="Data Source=192.168.0.9\jockel;Initial Catalog=JEGR_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+   PublicConnectionString="Data Source=192.168.0.9\jockel;Initial Catalog=JEGR_Public;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent" />
+  
+  <ConfigurationEntry Encrypted="false" Name="cabrini"
+   GemacConnectionString="Data Source=192.168.0.9\cabrini;Initial Catalog=RAIL_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+   JegrConnectionString="Data Source=192.168.0.9\cabrini;Initial Catalog=JEGR_DB;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent"
+   PublicConnectionString="Data Source=192.168.0.9\cabrini;Initial Catalog=JEGR_Public;Persist Security Info=True;User ID=sa;Password=Jen&amp;excellent" />
+
+
+</DbConfiguration>
+
