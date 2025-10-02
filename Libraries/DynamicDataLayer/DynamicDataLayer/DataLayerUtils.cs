@@ -230,49 +230,6 @@ namespace Dynamic.DataLayer
             set { detailAudit = AssignNotify(ref detailAudit, value, "DetailAudit"); }
         }
 
-        //public String AppDesc
-        //{
-        //    get
-        //    {
-        //        return GetAppDesc(AppID);
-        //    }
-        //    set
-        //    {
-        //        SetAppID(value);
-        //        NotifyPropertyChanged("AppDesc");
-        //    }
-        //}
-
-        //private string GetAppDesc(int id)
-        //{
-        //    string aString = string.Empty;
-        //    SqlDataAccess da = SqlDataAccess.Singleton;
-        //    Apps aps = da.GetAllApps();
-        //    if (aps != null)
-        //    {
-        //        App au = aps.GetById(id);
-        //        if (au != null)
-        //            aString = au.AppDesc;
-        //    }
-        //    return aString;
-        //}
-
-        //private void SetAppID(string appName)
-        //{
-        //    int id = -1;
-        //    SqlDataAccess da = SqlDataAccess.Singleton;
-        //    Apps aps = da.GetAllApps();
-        //    if (aps != null)
-        //    {
-        //        App au = aps.GetByDesc(appName);
-        //        if (au != null)
-        //            id = au.AppID;
-        //    }
-        //    if (id > -1)
-        //        activeData.AppID = id;
-        //}
-
-
         #endregion
 
     }
@@ -364,107 +321,6 @@ namespace Dynamic.DataLayer
             get { return dataXML; }
             set { dataXML = AssignNotify(ref dataXML, value, "DataXML"); }
         }
-
-        //public String UserDesc
-        //{
-        //    get
-        //    {
-        //        return GetUserDesc(AppUserID);
-        //    }
-        //    set
-        //    {
-        //        SetUserID(value);
-        //        NotifyPropertyChanged("UserDesc");
-        //    }
-        //}
-
-        //private string GetUserDesc(int uid)
-        //{
-        //    string aString = string.Empty;
-        //    SqlDataAccess da = SqlDataAccess.Singleton;
-        //    AppUsers aus = da.GetAllAppUsers();
-        //    if (aus != null)
-        //    {
-        //        AppUser au = aus.GetById(uid);
-        //        if (au != null)
-        //            aString = au.UserDesc;
-        //    }
-        //    return aString;
-        //}
-
-        //private void SetUserID(string userDesc)
-        //{
-        //    int id = -1;
-        //    SqlDataAccess da = SqlDataAccess.Singleton;
-        //    AppUsers aus = da.GetAllAppUsers();
-        //    if (aus != null)
-        //    {
-        //        AppUser au = aus.GetByDesc(userDesc);
-        //        if (au != null)
-        //            id = au.AppUserID;
-        //    }
-        //    if (id > -1)
-        //        activeData.AppUserID = id;
-        //}
-
-        //public int AppUserID
-        //{
-        //    get
-        //    {
-        //        return this.activeData.AppUserID;
-        //    }
-        //    set
-        //    {
-        //        if (this.activeData.AppUserID != value)
-        //        {
-        //            this.activeData.AppUserID = value;
-        //            NotifyPropertyChanged("AppUserID");
-        //        }
-        //    }
-        //}
-
-        //public String AppDesc
-        //{
-        //    get
-        //    {
-        //        return GetAppDesc(AppID);
-        //    }
-        //    set
-        //    {
-        //        SetAppID(value);
-        //        NotifyPropertyChanged("AppDesc");
-        //    }
-        //}
-
-        //private string GetAppDesc(int id)
-        //{
-        //    string aString = string.Empty;
-        //    SqlDataAccess da = SqlDataAccess.Singleton;
-        //    Apps aps = da.GetAllApps();
-        //    if (aps != null)
-        //    {
-        //        App au = aps.GetById(id);
-        //        if (au != null)
-        //            aString = au.AppDesc;
-        //    }
-        //    return aString;
-        //}
-
-        //private void SetAppID(string appName)
-        //{
-        //    int id = -1;
-        //    SqlDataAccess da = SqlDataAccess.Singleton;
-        //    Apps aps = da.GetAllApps();
-        //    if (aps != null)
-        //    {
-        //        App au = aps.GetByDesc(appName);
-        //        if (au != null)
-        //            id = au.AppID;
-        //    }
-        //    if (id > -1)
-        //        activeData.AppID = id;
-        //}
-
 
         #endregion
 
@@ -3610,7 +3466,7 @@ namespace Dynamic.DataLayer
             TblName = "tblShiftMachineAssignments";
             DbName = "JEGR_Utils";
             dBFieldMappings = new DBFieldMappings();
-            dBFieldMappings.AddMapping("AssignmentID", "AssignmentID", true, false);
+            dBFieldMappings.AddMapping("AssignmentID", "AssignmentID", true, true);
             dBFieldMappings.AddMapping("ShiftID", "ShiftID");
             dBFieldMappings.AddMapping("MachineRecNum", "MachineRecNum");
             dBFieldMappings.AddMapping("MachineIdJensen", "MachineIdJensen");
@@ -3705,7 +3561,7 @@ namespace Dynamic.DataLayer
             TblName = "tblShiftSettings";
             DbName = "JEGR_Utils";
             dBFieldMappings = new DBFieldMappings();
-            dBFieldMappings.AddMapping("SettingID", "SettingID", true, false);
+            dBFieldMappings.AddMapping("SettingID", "SettingID", true, true);
             dBFieldMappings.AddMapping("SettingName", "SettingName");
             dBFieldMappings.AddMapping("SettingValue", "SettingValue");
             dBFieldMappings.AddMapping("Detail", "Detail");
@@ -3776,7 +3632,7 @@ namespace Dynamic.DataLayer
             TblName = "tblOperatorSettings";
             DbName = "JEGR_Utils";
             dBFieldMappings = new DBFieldMappings();
-            dBFieldMappings.AddMapping("OperatorSettingID", "OperatorSettingID", true, false);
+            dBFieldMappings.AddMapping("OperatorSettingID", "OperatorSettingID", true, true);
             dBFieldMappings.AddMapping("OperatorRecNum", "OperatorRecNum");
             dBFieldMappings.AddMapping("CanReplaceOperator", "CanReplaceOperator");
             dBFieldMappings.AddMapping("ModifiedDate", "ModifiedDate");
