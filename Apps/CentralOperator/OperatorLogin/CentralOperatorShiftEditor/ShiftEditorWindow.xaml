@@ -198,14 +198,12 @@
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       SelectionMode="Extended"
-                      IsReadOnly="True">
+                      IsReadOnly="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Assignment ID" Binding="{Binding AssignmentID}" IsReadOnly="True" Width="100" Visibility="Collapsed"/>
                                 <DataGridTextColumn Header="Machine ID" Binding="{Binding MachineIdJensen}" Width="150"/>
-                                <DataGridTextColumn Header="Machine RecNum" Binding="{Binding MachineRecNum}" Width="120"/>
                                 <DataGridTextColumn Header="Day of Week" Binding="{Binding DayOfWeekName}" Width="120"/>
-                                <DataGridCheckBoxColumn Header="Active" Binding="{Binding IsActive}" Width="70" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Created" Binding="{Binding CreatedDate, StringFormat=G}" IsReadOnly="True" Width="*"/>
+                                <DataGridCheckBoxColumn Header="Active" Binding="{Binding IsActive}" Width="70" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </DockPanel>

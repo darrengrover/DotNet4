@@ -374,8 +374,10 @@ namespace CentralOperatorShiftEditor
                 {
                     foreach (ShiftMachineAssignment assignment in assignments)
                     {
-                        if (assignment.ShiftID == shift.ShiftID && assignment.IsActive)
+                        if (assignment.ShiftID == shift.ShiftID)
                         {
+                            // Ensure lookup fields are populated
+                            PopulateAssignmentLookupFields(assignment);
                             currentShiftMachines.Add(assignment);
                         }
                     }
@@ -408,6 +410,47 @@ namespace CentralOperatorShiftEditor
             finally
             {
                 Mouse.OverrideCursor = null;
+            }
+        }
+
+        /// <summary>
+        /// Populates the lookup fields (MachineIdJensen and DayOfWeekName) for an assignment
+        /// </summary>
+        private void PopulateAssignmentLookupFields(ShiftMachineAssignment assignment)
+        {
+            // Populate MachineIdJensen if not already set
+            if (string.IsNullOrEmpty(assignment.MachineIdJensen))
+            {
+                var machines = dataAccess.GetAllMachines(null, false);
+                var machine = machines.Cast<Machine>().FirstOrDefault(m => m.RecNum == assignment.MachineRecNum);
+                if (machine != null)
+                {
+                    assignment.MachineIdJensen = machine.IdJensen.ToString();
+                }
+            }
+
+            // Populate DayOfWeekName if not already set
+            if (string.IsNullOrEmpty(assignment.DayOfWeekName))
+            {
+                assignment.DayOfWeekName = GetDayOfWeekName(assignment.DayOfWeek);
+            }
+        }
+
+        /// <summary>
+        /// Converts day of week number to name
+        /// </summary>
+        private string GetDayOfWeekName(int dayOfWeek)
+        {
+            switch (dayOfWeek)
+            {
+                case 1: return "Sunday";
+                case 2: return "Monday";
+                case 3: return "Tuesday";
+                case 4: return "Wednesday";
+                case 5: return "Thursday";
+                case 6: return "Friday";
+                case 7: return "Saturday";
+                default: return "Unknown";
             }
         }
 
@@ -457,6 +500,9 @@ namespace CentralOperatorShiftEditor
                     // Add to both collections
                     foreach (var assignment in dialog.NewAssignments)
                     {
+                        // Ensure lookup fields are populated (they should already be set by the dialog)
+                        PopulateAssignmentLookupFields(assignment);
+
                         currentShiftMachines.Add(assignment);
                         assignments.Add(assignment);
                     }
@@ -465,7 +511,6 @@ namespace CentralOperatorShiftEditor
                     txtShiftMachineCount.Text = $"{currentShiftMachines.Count} assignment(s)";
                     MarkShiftMachinesChanged();
 
-                    // CHANGED: Don't say "successfully saved" - they're not saved yet!
                     MessageBox.Show(
                         $"Added {dialog.NewAssignments.Count} assignment(s) to the list.\n\n" +
                         $"Click 'Save Assignments' to save to database.\n\n" +
