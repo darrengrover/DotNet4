@@ -21,13 +21,14 @@ namespace CentralLoginService
         public Cockpit_Central_Operator()
         {
             InitializeComponent();
-            ServiceName = "Cockpit_Central_Operator";
+            ServiceName = Properties.Settings.Default.ServiceName ?? "Cockpit_Central_Operator";
             CanStop = true;
             CanPauseAndContinue = true;
             CanHandleSessionChangeEvent = true;
             debugMode = Properties.Settings.Default.DebugMode;
             tagReaderServiceFramework = new TagReaderServiceFramework(Properties.Settings.Default.JEGRConnection, Feedback);
             tagReaderServiceFramework.UseOperatorPermissions = Properties.Settings.Default.UseOperatorPermissions;
+            tagReaderServiceFramework.UseShiftManagement = Properties.Settings.Default.UseShiftManagement;
             SetState(currentState);
             uiSyncContext = SynchronizationContext.Current;
         }

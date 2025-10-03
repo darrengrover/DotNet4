@@ -6,6 +6,7 @@ using System.Configuration.Install;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
+using System.Xml;
 
 
 namespace CentralLoginService
@@ -28,7 +29,7 @@ namespace CentralLoginService
             serviceProcessInstaller.Password = null;
 
             //# Service Information
-            serviceInstaller.StartType = ServiceStartMode.Automatic;          
+            serviceInstaller.StartType = ServiceStartMode.Automatic;
             serviceInstaller.Description = "Interfaces with RFIdeas card readers";
 
             Installers.Add(serviceProcessInstaller);
@@ -37,39 +38,34 @@ namespace CentralLoginService
         protected override void OnBeforeInstall(IDictionary savedState)
         {
             base.OnBeforeInstall(savedState);
-            ConfigureService();
-        }
 
-        protected override void OnBeforeUninstall(IDictionary savedState)
-        {
-            base.OnBeforeUninstall(savedState);
-            ConfigureService();
-        }
-        private void ConfigureService()
-        {
-            // Get parameters from custom action
+            // Get service name from parameters
             string serviceName = Context.Parameters["servicename"];
-            string useShiftManagement = Context.Parameters["useshiftmanagement"];
-
-            // Use defaults if not provided
             if (string.IsNullOrEmpty(serviceName))
             {
                 serviceName = "Cockpit_Central_Operator";
             }
 
-            if (string.IsNullOrEmpty(useShiftManagement))
-            {
-                useShiftManagement = "false";
-            }
-
-            // Update service installer
+            // Update service installer with the service name
             serviceInstaller.ServiceName = serviceName;
             serviceInstaller.DisplayName = serviceName.Replace("_", " ");
 
-            // Save settings to config file
+            // Save the service name so we can use it in Commit phase
+            savedState["servicename"] = serviceName;
+            savedState["useshiftmanagement"] = Context.Parameters["useshiftmanagement"] ?? "false";
+        }
+
+        protected override void OnCommitted(IDictionary savedState)
+        {
+            base.OnCommitted(savedState);
+
+            // NOW update the config file - all files have been deployed
             try
             {
                 string targetDir = Context.Parameters["targetdir"];
+                string serviceName = savedState["servicename"] as string;
+                string useShiftManagement = savedState["useshiftmanagement"] as string;
+
                 if (!string.IsNullOrEmpty(targetDir))
                 {
                     UpdateConfigFile(targetDir, serviceName, useShiftManagement);
@@ -77,43 +73,80 @@ namespace CentralLoginService
             }
             catch (Exception ex)
             {
+                // Log but don't fail the installation
                 Context.LogMessage($"Warning: Could not update config file: {ex.Message}");
             }
+        }
+
+        protected override void OnBeforeUninstall(IDictionary savedState)
+        {
+            base.OnBeforeUninstall(savedState);
+
+            // Use service name from parameters for uninstall
+            string serviceName = Context.Parameters["servicename"];
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                serviceName = "Cockpit_Central_Operator";
+            }
+
+            serviceInstaller.ServiceName = serviceName;
         }
 
         private void UpdateConfigFile(string targetDir, string serviceName, string useShiftManagement)
         {
             string configPath = Path.Combine(targetDir, "CentralLoginService.exe.config");
 
-            if (File.Exists(configPath))
+            if (!File.Exists(configPath))
             {
-                var doc = new System.Xml.XmlDocument();
-                doc.Load(configPath);
-
-                // Update appSettings
-                var appSettings = doc.SelectSingleNode("//appSettings");
-                if (appSettings != null)
-                {
-                    UpdateOrAddSetting(doc, appSettings, "ServiceName", serviceName);
-                    UpdateOrAddSetting(doc, appSettings, "UseShiftManagement", useShiftManagement);
-                }
-
-                doc.Save(configPath);
+                Context.LogMessage($"Config file not found at: {configPath}");
+                return;
             }
+
+            var doc = new XmlDocument();
+            doc.Load(configPath);
+
+            // Update applicationSettings for both ServiceName and UseShiftManagement
+            UpdateApplicationSetting(doc, "ServiceName", serviceName);
+            UpdateApplicationSetting(doc, "UseShiftManagement", useShiftManagement);
+
+            doc.Save(configPath);
+            Context.LogMessage($"Updated config file: ServiceName={serviceName}, UseShiftManagement={useShiftManagement}");
         }
 
-        private void UpdateOrAddSetting(System.Xml.XmlDocument doc, System.Xml.XmlNode appSettings, string key, string value)
+        private void UpdateApplicationSetting(XmlDocument doc, string settingName, string value)
         {
-            var setting = appSettings.SelectSingleNode($"add[@key='{key}']");
+            // Navigate to applicationSettings/CentralLoginService.Properties.Settings
+            var appSettings = doc.SelectSingleNode("//applicationSettings/CentralLoginService.Properties.Settings");
+
+            if (appSettings == null)
+            {
+                Context.LogMessage($"Warning: applicationSettings section not found in config file");
+                return;
+            }
+
+            // Look for existing setting
+            var setting = appSettings.SelectSingleNode($"setting[@name='{settingName}']");
+
             if (setting != null)
             {
-                setting.Attributes["value"].Value = value;
+                // Update existing setting value
+                var valueNode = setting.SelectSingleNode("value");
+                if (valueNode != null)
+                {
+                    valueNode.InnerText = value;
+                }
             }
             else
             {
-                var newSetting = doc.CreateElement("add");
-                newSetting.SetAttribute("key", key);
-                newSetting.SetAttribute("value", value);
+                // Create new setting element
+                var newSetting = doc.CreateElement("setting");
+                newSetting.SetAttribute("name", settingName);
+                newSetting.SetAttribute("serializeAs", "String");
+
+                var valueElement = doc.CreateElement("value");
+                valueElement.InnerText = value;
+
+                newSetting.AppendChild(valueElement);
                 appSettings.AppendChild(newSetting);
             }
         }

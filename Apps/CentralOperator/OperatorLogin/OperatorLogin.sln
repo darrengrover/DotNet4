@@ -31,13 +31,13 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "OperatorLoginSetup", "Opera
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBars", "..\..\..\Libraries\Ge_Mac.Controls\SimpleBar\SimpleBar\SimpleBars.csproj", "{24091A47-B64C-45A7-9A95-EB497FA3CFD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardReaderEmulator", "..\..\..\..\ge-mac\Tools\CardReaderEmulator\CardReaderEmulator.csproj", "{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CentralOperatorShiftEditor", "CentralOperatorShiftEditor\CentralOperatorShiftEditor.csproj", "{78CFA0B0-63EA-40AB-95AA-C1F1D93619C2}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CentralLoginServiceSetup_Shift", "CentralLoginServiceSetup_Shift\CentralLoginServiceSetup_Shift.vdproj", "{BC588146-34AE-E141-733A-8004B31B58AE}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CentralLoginServiceSetup", "CentralLoginServiceSetup\CentralLoginServiceSetup.vdproj", "{83C547E6-86E1-BBF1-773B-27B3B70C1309}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardReaderEmulator", "..\..\..\Tools\CardReaderEmulator\CardReaderEmulator.csproj", "{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -187,18 +187,6 @@ Global
 		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Release|x86.ActiveCfg = Release|Any CPU
 		{24091A47-B64C-45A7-9A95-EB497FA3CFD8}.Release|x86.Build.0 = Release|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Debug|x86.Build.0 = Debug|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Release|x86.ActiveCfg = Release|Any CPU
-		{51BC93D7-FE5A-643D-099C-4C7EA1669AE4}.Release|x86.Build.0 = Release|Any CPU
 		{78CFA0B0-63EA-40AB-95AA-C1F1D93619C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78CFA0B0-63EA-40AB-95AA-C1F1D93619C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78CFA0B0-63EA-40AB-95AA-C1F1D93619C2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -229,6 +217,18 @@ Global
 		{83C547E6-86E1-BBF1-773B-27B3B70C1309}.Release|Mixed Platforms.Build.0 = Release
 		{83C547E6-86E1-BBF1-773B-27B3B70C1309}.Release|x86.ActiveCfg = Release
 		{83C547E6-86E1-BBF1-773B-27B3B70C1309}.Release|x86.Build.0 = Release
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Debug|x86.Build.0 = Debug|Any CPU
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Release|Any CPU.Build.0 = Release|Any CPU
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Release|x86.ActiveCfg = Release|Any CPU
+		{979DC7FE-DBD5-B9B7-8181-F2C47E6AE681}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

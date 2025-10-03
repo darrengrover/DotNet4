@@ -59,14 +59,6 @@ CREATE TABLE tblOperatorSettings (
     ModifiedDate datetime NOT NULL DEFAULT GETDATE()
 );
 
--- Validation Rules Reference Table
-CREATE TABLE tblShiftValidationRules (
-    RuleID int IDENTITY(1,1) PRIMARY KEY,
-    RuleName varchar(50) NOT NULL UNIQUE,
-    RuleDescription varchar(255) NOT NULL,
-    IsActive bit NOT NULL DEFAULT 1
-);
-
 -- =============================================
 -- INDEXES FOR PERFORMANCE
 -- =============================================
@@ -166,16 +158,8 @@ GO
 
 INSERT INTO tblShiftSettings (SettingName, SettingValue, Detail)
 VALUES 
-    ('AutoLogoutAtShiftEnd', 'True', 'Automatically log out operators when their shift ends'),
-    ('DefaultDeltaMinus', '5', 'Default minutes before shift end that operators can log out'),
-    ('DefaultDeltaPlus', '5', 'Default minutes after shift end that operators can log out');
+    ('AutoLogoutAtShiftEnd', 'True', 'Automatically log out operators when their shift ends');
 
-INSERT INTO tblShiftValidationRules (RuleName, RuleDescription)
-VALUES 
-    ('NoOverlappingShifts', 'Prevents overlapping shifts for the same machine on the same day'),
-    ('ValidTimeRange', 'Ensures shift times are valid'),
-    ('ValidDayOfWeek', 'Ensures day of week values are between 1 and 7');
-GO
 -- =============================================
 -- UTILITY VIEWS FOR EASY QUERYING
 -- =============================================

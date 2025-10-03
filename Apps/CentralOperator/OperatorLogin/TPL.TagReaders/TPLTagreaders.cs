@@ -100,6 +100,18 @@ namespace TPL.TagReaders
                     tagReaders.UseOperatorPermissions = value;
             }
         }
+        private bool useShiftManagement = false;
+
+        public bool UseShiftManagement
+        {
+            get { return useShiftManagement; }
+            set
+            {
+                useShiftManagement = value;
+                if (tagReaders != null)
+                    tagReaders.UseShiftManagement = value;
+            }
+        }
         public TagReaderServiceFramework(string connectionString, FeedbackDelegate feedback)
         {
             da = SqlDataAccess.Singleton;
@@ -196,6 +208,7 @@ namespace TPL.TagReaders
 
         private int updateMinute = -1;
         private int autoLogoutMin = -1;
+        private int shiftCheckMinute = -1;
         private DateTime _clearedDueToRetentionLimit = DateTime.MinValue;
         private bool evalLogoutTime()
         {
@@ -257,6 +270,16 @@ namespace TPL.TagReaders
                         logouts = tagReaders.AutoLogoutNow();
                         lastForcedLogout = DateTime.Today.AddHours(logoutTime.Hour).AddMinutes(logoutTime.Minute);
                         Feedback("Autologout Completed");
+                    }
+                    // Shift-based auto logout (checks its own setting internally)
+                    if (useShiftManagement && min != shiftCheckMinute)
+                    {
+                        shiftCheckMinute = min;
+                        int shiftLogouts = tagReaders.AutoLogoutExpiredShifts();
+                        if (shiftLogouts > 0)
+                        {
+                            Feedback($"Shift auto-logout: {shiftLogouts} operators logged out");
+                        }
                     }
                     if (min % 15 == 0) // every 15 minutes??
                     {
@@ -343,7 +366,11 @@ namespace TPL.TagReaders
         private OperatorPermissions operatorPermissionsFromDb;
         public bool DebugMode { get; set; }
         public bool UseOperatorPermissions { get; set; }
-
+        public bool UseShiftManagement { get; set; }
+        private Shifts shifts;
+        private ShiftMachineAssignments shiftMachineAssignments;
+        private ShiftSettings shiftSettings;
+        private OperatorSettings operatorSettings;
         public TPLTagReaders()
         {
             
@@ -362,6 +389,10 @@ namespace TPL.TagReaders
             tagReaderLog = new TagReaderLog();
             availablePermissionsFromDb = new Permissions();
             operatorPermissionsFromDb = new OperatorPermissions();
+            shifts = new Shifts();
+            shiftMachineAssignments = new ShiftMachineAssignments();
+            shiftSettings = new ShiftSettings();
+            operatorSettings = new OperatorSettings();
             da = SqlDataAccess.Singleton;
             GetData();        
         }
@@ -376,8 +407,8 @@ namespace TPL.TagReaders
         {
             getReadersData();
             ReloadData(true);
+            
         }
-
         private void getReadersData()
         {
             if (tagReaderLocs == null)
@@ -403,6 +434,40 @@ namespace TPL.TagReaders
         {
             RfIdeasTcpReader tcpReader = new RfIdeasTcpReader(locationid, ip, port, machine, sub, maxlogins, DebugMode);
             TcpReaders.Add(tcpReader);
+        }
+        private void getShiftData(bool useCache)
+        {
+            if (UseShiftManagement)
+            {
+                shifts.RaiseException = true;
+                shifts = da.GetShifts(shifts, !useCache);
+
+                shiftMachineAssignments.RaiseException = true;
+                shiftMachineAssignments = da.GetShiftMachineAssignments(shiftMachineAssignments, !useCache);
+
+                shiftSettings.RaiseException = true;
+                shiftSettings = da.GetShiftSettings(shiftSettings, !useCache);
+
+                operatorSettings.RaiseException = true;
+                operatorSettings = da.GetOperatorSettings(operatorSettings, !useCache);
+            }
+        }
+        private bool OperatorCanReplace(int operatorId)
+        {
+            if (!UseShiftManagement || operatorSettings == null)
+                return false;
+
+            // Find the operator in operatorsRfid to get their RecNum
+            Operator op = (Operator)operatorsRfid.GetById(operatorId);
+            if (op == null)
+                return false;
+
+            // Look up their setting by OperatorRecNum
+            OperatorSetting setting = operatorSettings
+                .OfType<OperatorSetting>()
+                .FirstOrDefault(s => s.OperatorRecNum == op.RecNum);
+
+            return setting != null && setting.CanReplaceOperator;
         }
         private void getOperatorsData(bool useCache)
         {
@@ -594,9 +659,258 @@ namespace TPL.TagReaders
             remoteOperatorLogs.UpdateFieldNames = new List<string>();
             remoteOperatorLogs.UpdateFieldNames.Add("Operator_Remote");
         }
+        private bool GetAutoLogoutAtShiftEnd()
+        {
+            if (!UseShiftManagement || shiftSettings == null)
+                return false;
 
+            ShiftSetting setting = (ShiftSetting)shiftSettings
+                .OfType<ShiftSetting>()
+                .FirstOrDefault(s => s.SettingName == "AutoLogoutAtShiftEnd");
+
+            if (setting != null)
+            {
+                return bool.TryParse(setting.SettingValue, out bool result) && result;
+            }
+
+            return false; // Default to false if setting not found
+        }
+        public int AutoLogoutExpiredShifts()
+        {
+            if (!UseShiftManagement || !GetAutoLogoutAtShiftEnd())
+                return 0;
+
+            int logoutCount = 0;
+
+            try
+            {
+                foreach (OperatorLoginState opState in OperatorStates)
+                {
+                    if (opState.IsLoggedIn)
+                    {
+                        Shift activeShift = GetActiveShift(opState.MachineID);
+
+                        if (activeShift != null)
+                        {
+                            TimeSpan currentTimeOfDay = DateTime.Now.TimeOfDay;
+                            TimeSpan timeSinceShiftEnd;
+
+                            // Calculate time since shift ended
+                            if (activeShift.StartTime <= activeShift.EndTime)
+                            {
+                                // Normal shift
+                                timeSinceShiftEnd = currentTimeOfDay - activeShift.EndTime;
+                            }
+                            else
+                            {
+                                // Midnight crossing shift
+                                if (currentTimeOfDay >= activeShift.EndTime)
+                                {
+                                    timeSinceShiftEnd = currentTimeOfDay - activeShift.EndTime;
+                                }
+                                else
+                                {
+                                    // We're past midnight, shift ended yesterday
+                                    timeSinceShiftEnd = (TimeSpan.FromHours(24) - activeShift.EndTime) + currentTimeOfDay;
+                                }
+                            }
+
+                            // Auto-logout if we're past shift end + DeltaPlus
+                            if (timeSinceShiftEnd.TotalMinutes > activeShift.DeltaPlus &&
+                                timeSinceShiftEnd.TotalMinutes <= (activeShift.DeltaPlus + 5))
+                            {
+                                debugInfo($"Auto-logout at shift end: Operator {opState.OperatorID}, Machine {opState.MachineID}");
+                                opState.Logout(DateTime.Now);
+                                logoutCount++;
+
+                                // Update the LED on the reader
+                                foreach (RfIdeasTcpReader reader in TcpReaders)
+                                {
+                                    if (reader.MachineID == opState.MachineID)
+                                    {
+                                        reader.RedLED();
+                                        reader.IsActiveStation = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                debugInfo($"AutoLogoutExpiredShifts error: {ex.Message}");
+            }
+
+            return logoutCount;
+        }
+        /// <summary>
+        /// Gets the active shift for a machine at the current time
+        /// </summary>
+        /// <param name="machineID">Machine ID</param>
+        /// <returns>Active Shift or null if no shift is active</returns>
+        private Shift GetActiveShift(int machineID)
+        {
+            return GetActiveShift(machineID, DateTime.Now);
+        }
+
+        /// <summary>
+        /// Gets the active shift for a machine at a specific time
+        /// </summary>
+        private Shift GetActiveShift(int machineID, DateTime checkTime)
+        {
+            try
+            {
+                DayOfWeek currentDay = checkTime.DayOfWeek;
+                TimeSpan currentTimeOfDay = checkTime.TimeOfDay;
+
+                // Get all shift assignments for this machine on this day of week
+                var assignments = shiftMachineAssignments
+                    .OfType<ShiftMachineAssignment>()
+                    .Where(a => a.MachineRecNum == machineID
+                             && a.DayOfWeek == (int)currentDay
+                             && a.IsActive)
+                    .ToList();
+
+                if (assignments.Count == 0)
+                    return null;
+
+                // Check each assignment to see if its shift is currently active
+                foreach (var assignment in assignments)
+                {
+                    Shift shift = (Shift)shifts.GetById(assignment.ShiftID);
+                    if (shift != null && shift.IsActive)
+                    {
+                        // Handle shifts that cross midnight
+                        if (shift.StartTime <= shift.EndTime)
+                        {
+                            // Normal shift (e.g., 6am - 2pm)
+                            if (currentTimeOfDay >= shift.StartTime && currentTimeOfDay < shift.EndTime)
+                                return shift;
+                        }
+                        else
+                        {
+                            // Midnight-crossing shift (e.g., 10pm - 6am)
+                            if (currentTimeOfDay >= shift.StartTime || currentTimeOfDay < shift.EndTime)
+                                return shift;
+                        }
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                debugInfo($"GetActiveShift error: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Checks if current time is within the delta period before/after shift end
+        /// </summary>
+        /// <param name="shift">The shift to check</param>
+        /// <param name="currentTime">Time to check (typically DateTime.Now)</param>
+        /// <returns>True if within delta period (logout allowed), false otherwise</returns>
+        private bool IsWithinShiftDelta(Shift shift, DateTime currentTime)
+        {
+            if (shift == null)
+                return true; // No shift = no restrictions
+
+            try
+            {
+                TimeSpan currentTimeOfDay = currentTime.TimeOfDay;
+                TimeSpan shiftEndTime = shift.EndTime;
+
+                // Calculate time until shift end
+                TimeSpan timeUntilEnd;
+
+                if (shift.StartTime <= shift.EndTime)
+                {
+                    // Normal shift (doesn't cross midnight)
+                    if (currentTimeOfDay < shiftEndTime)
+                    {
+                        // Still before shift end today
+                        timeUntilEnd = shiftEndTime - currentTimeOfDay;
+                    }
+                    else
+                    {
+                        // Past shift end - should have been auto-logged out
+                        return true; // Allow logout
+                    }
+                }
+                else
+                {
+                    // Shift crosses midnight
+                    if (currentTimeOfDay >= shift.StartTime)
+                    {
+                        // We're in the pre-midnight portion
+                        // Calculate time until midnight plus time after midnight to shift end
+                        timeUntilEnd = (TimeSpan.FromHours(24) - currentTimeOfDay) + shiftEndTime;
+                    }
+                    else if (currentTimeOfDay < shiftEndTime)
+                    {
+                        // We're in the post-midnight portion
+                        timeUntilEnd = shiftEndTime - currentTimeOfDay;
+                    }
+                    else
+                    {
+                        // Past shift end
+                        return true;
+                    }
+                }
+
+                // Check if we're within Delta- minutes before shift end
+                if (timeUntilEnd.TotalMinutes <= shift.DeltaMinus)
+                {
+                    // Within the pre-shift-end delta period
+                    return true;
+                }
+
+                // Check if we're in the post-shift-end delta period (Delta+)
+                TimeSpan timeSinceEnd = currentTimeOfDay - shiftEndTime;
+                if (shift.StartTime <= shift.EndTime)
+                {
+                    // Normal shift
+                    if (timeSinceEnd.TotalMinutes >= 0 && timeSinceEnd.TotalMinutes <= shift.DeltaPlus)
+                        return true;
+                }
+                else
+                {
+                    // Midnight crossing shift - more complex
+                    if (currentTimeOfDay >= shiftEndTime)
+                    {
+                        if (timeSinceEnd.TotalMinutes <= shift.DeltaPlus)
+                            return true;
+                    }
+                }
+
+                return false; // Outside delta period
+            }
+            catch (Exception ex)
+            {
+                debugInfo($"IsWithinShiftDelta error: {ex.Message}");
+                return true; // On error, allow logout (fail-safe)
+            }
+        }
+
+        /// <summary>
+        /// Helper to check if a machine has any active shift at the current time
+        /// </summary>
+        private bool MachineHasActiveShift(int machineID)
+        {
+            return GetActiveShift(machineID) != null;
+        }
         public void ReloadData(bool useCache)
         {
+            try
+            {
+                getShiftData(useCache);
+            }
+            catch (Exception ex)
+            {
+                debugInfo(this.GetType().Name + " " + MethodInfo.GetCurrentMethod() + ex.Message);
+            }
             try
             {
                 getOperatorsData(useCache);
@@ -875,6 +1189,29 @@ namespace TPL.TagReaders
                         Operator op = (Operator)operatorsRfid.GetById(t.ReferenceID);
                         if (!op.Retired) // retired operators can't log in or out.
                         {
+                            // ============ START STEP 4 CHANGES ============
+                            // Get shift information if shift management is enabled
+                            Shift activeShift = null;
+                            bool machineHasActiveShift = false;
+                            bool withinDelta = true;
+                            if (UseShiftManagement)
+                            {
+                                activeShift = GetActiveShift(machineid);
+                                machineHasActiveShift = (activeShift != null);
+
+                                if (machineHasActiveShift)
+                                {
+                                    withinDelta = IsWithinShiftDelta(activeShift, DateTime.Now);
+
+                                    if (DebugMode)
+                                    {
+                                        debugInfo($"Shift Active: Machine {machineid}, Shift {activeShift.ShiftName} " +
+                                                 $"({activeShift.StartTime} - {activeShift.EndTime}), " +
+                                                 $"Within Delta: {withinDelta}");
+                                    }
+                                }
+                            }
+                            // ============ END STEP 4 CHANGES ============
                             OperatorLoginState opState = (OperatorLoginState)OperatorStates.GetByOperatorID(t.ReferenceID);
                             if (opState != null)
                             {
@@ -889,56 +1226,136 @@ namespace TPL.TagReaders
                                 {
                                     if ((opState.MachineID == machineid) && (opState.SubID == subid)) //this machine station?
                                     {
-                                        if (!UseOperatorPermissions || op.IsAllowedToManuallyLogout)
+                                        // ============ STEP 7 CHANGES - SAME LOCATION LOGOUT ============
+                                        // Check shift restrictions for logout
+                                        if (UseShiftManagement && machineHasActiveShift && !withinDelta)
                                         {
-                                            //debugInfo("Just Logout " + machineid.ToString() + ", " + subid.ToString() + ", " + op.NameAndID + Environment.NewLine);
-                                            opState.Logout(DateTime.Now);
-                                            canLogin = false; //don't login again - simple logout
-                                            tcpReader.RedLED();
-                                            tcpReader.IsActiveStation = false;
+                                            // Outside delta period - operator CANNOT manually logout
+                                            canLogin = false;
+                                            debugInfo($"Shift Management | Logout Denied - Outside Delta Period | " +
+                                                     $"Machine {machineid}, Sub {subid}, Operator {op.NameAndID}");
+                                            tcpReader.OrangeLED();
                                         }
                                         else
                                         {
-                                            canLogin = false; //don't login again - simple logout
-                                            debugInfo("Operator Permission | Logout Disallowed | " + machineid.ToString() + ", " + subid.ToString());
-                                            tcpReader.OrangeLED();
+                                            // Either within delta OR no active shift - check permissions normally
+                                            if (!UseOperatorPermissions || op.IsAllowedToManuallyLogout)
+                                            {
+                                                opState.Logout(DateTime.Now);
+                                                canLogin = false;
+                                                tcpReader.RedLED();
+                                                tcpReader.IsActiveStation = false;
+                                            }
+                                            else
+                                            {
+                                                canLogin = false;
+                                                debugInfo($"Operator Permission | Logout Disallowed | " +
+                                                         $"Machine {machineid}, Sub {subid}, Operator {op.NameAndID}");
+                                                tcpReader.OrangeLED();
+                                            }
                                         }
+
+                                        // ============ END STEP 7 CHANGES ============
+
                                     }
                                     else //no somewhere else
                                     {
-                                        //debugInfo("Logout other location " + opState.MachineID.ToString() + ", " + opState.SubID.ToString() + ", "
-                                            //+ op.NameAndID + Environment.NewLine);
-                                        opState.Logout(DateTime.Now);
-                                        foreach (RfIdeasTcpReader reader in TcpReaders)
+                                        // ============ STEP 8 CHANGES - DIFFERENT LOCATION LOGOUT ============
+
+                                        // Check if OTHER location has shift restrictions
+                                        Shift otherLocationShift = null;
+                                        bool otherLocationHasShift = false;
+                                        bool otherLocationWithinDelta = true;
+
+                                        if (UseShiftManagement)
                                         {
-                                            if ((opState.MachineID == reader.MachineID)
-                                                && (opState.SubID == reader.SubID))
+                                            otherLocationShift = GetActiveShift(opState.MachineID);
+                                            otherLocationHasShift = (otherLocationShift != null);
+
+                                            if (otherLocationHasShift)
                                             {
-                                                reader.RedLED();
-                                                reader.IsActiveStation = false;
+                                                otherLocationWithinDelta = IsWithinShiftDelta(otherLocationShift, DateTime.Now);
                                             }
                                         }
+
+                                        // Can we logout from the other location?
+                                        bool canLogoutRemotely = true;
+
+                                        if (UseShiftManagement && otherLocationHasShift && !otherLocationWithinDelta)
+                                        {
+                                            if (UseOperatorPermissions && !OperatorCanReplace(t.ReferenceID))
+                                            {
+                                                canLogoutRemotely = false;
+                                                canLogin = false;
+                                                debugInfo($"Shift Management | Cannot Force Remote Logout | " +
+                                                         $"Operator {op.NameAndID} at Machine {opState.MachineID}, Sub {opState.SubID}");
+                                                tcpReader.OrangeLED();
+                                            }
+                                        }
+
+                                        if (canLogoutRemotely)
+                                        {
+                                            opState.Logout(DateTime.Now);
+                                            foreach (RfIdeasTcpReader reader in TcpReaders)
+                                            {
+                                                if ((opState.MachineID == reader.MachineID)
+                                                    && (opState.SubID == reader.SubID))
+                                                {
+                                                    reader.RedLED();
+                                                    reader.IsActiveStation = false;
+                                                }
+                                            }
+                                        }
+
+                                        // ============ END STEP 8 CHANGES ============
                                     }
                                 }
                                 if (canLogin)
                                 {
+                                    // ============ STEP 9 CHANGES - MULTI-LOGIN CHECK ============
+
                                     if (tcpReader.MaxLogins == 1)  //if !allow multi then logout
                                     {
-                                        OperatorLoginState otherOperator = (OperatorLoginState)OperatorStates.GetLoggedInByMachineSubID(machineid, subid);
+                                        OperatorLoginState otherOperator = OperatorStates.GetLoggedInByMachineSubID(machineid, subid);
                                         if (otherOperator != null) //another operator is logged in here!
                                         {
-                                            //debugInfo("Logout Other Operator " + machineid.ToString() + ", " + subid.ToString() + ", "
-                                                //+ otherOperator.OperatorID.ToString() + Environment.NewLine);
-                                            otherOperator.Logout(DateTime.Now); //log them out
+                                            // Check if we can replace the other operator
+                                            bool canReplace = true;
+
+                                            if (UseShiftManagement && machineHasActiveShift && !withinDelta)
+                                            {
+                                                // Shift is active and outside delta period
+                                                if (UseShiftManagement && machineHasActiveShift && !withinDelta)
+                                                {
+                                                    if (UseOperatorPermissions && !OperatorCanReplace(t.ReferenceID))
+                                                    {
+                                                        canReplace = false;
+                                                        canLogin = false;
+                                                        debugInfo($"Shift Management | Cannot Replace Operator | " +
+                                                                 $"Machine {machineid}, Sub {subid}, " +
+                                                                 $"Attempting: {op.NameAndID}, " +
+                                                                 $"Current: Operator {otherOperator.OperatorID}");
+                                                        tcpReader.OrangeLED();
+                                                    }
+                                                }
+                                            }
+
+                                            if (canReplace)
+                                            {
+                                                otherOperator.Logout(DateTime.Now);
+                                            }
                                         }
                                     }
-                                    if (OperatorStates.TotalLoggedInByMachineSubID(machineid, subid) < tcpReader.MaxLogins)
+
+                                    // ============ END STEP 9 CHANGES ============
+
+                                    if (canLogin && OperatorStates.TotalLoggedInByMachineSubID(machineid, subid) < tcpReader.MaxLogins)
                                     {
-                                        //debugInfo("Login " + machineid.ToString() + ", " + subid.ToString() + ", " + op.NameAndID + Environment.NewLine);
-                                        opState.Login(machineid, subid, DateTime.Now);//login this user
+                                        opState.Login(machineid, subid, DateTime.Now, activeShift);//login this user
                                         tcpReader.GreenLED();
                                         tcpReader.IsActiveStation = true;
                                     }
+
                                 }
                                 else
                                 {
@@ -2406,12 +2823,80 @@ namespace TPL.TagReaders
                 }
             } 
         }
+        private int? _activeShiftId;
+        public int? ActiveShiftId
+        {
+            get
+            {
+                _lock.EnterReadLock();
+                try
+                {
+                    return _activeShiftId;
+                }
+                finally { _lock.ExitReadLock(); }
+            }
+            set
+            {
+                _lock.EnterWriteLock();
+                try
+                {
+                    _activeShiftId = value;
+                }
+                finally
+                { _lock.ExitWriteLock(); }
+            }
+        }
+        private DateTime? _loginShiftStart;
+        public DateTime? LoginShiftStart
+        {
+            get
+            {
+                _lock.EnterReadLock();
+                try
+                {
+                    return _loginShiftStart;
+                }
+                finally { _lock.ExitReadLock(); }
+            }
+            set
+            {
+                _lock.EnterWriteLock();
+                try
+                {
+                    _loginShiftStart = value;
+                }
+                finally
+                { _lock.ExitWriteLock(); }
+            }
+        }
+        private DateTime? _loginShiftEnd;
+        public DateTime? LoginShiftEnd
+        {
+            get
+            {
+                _lock.EnterReadLock();
+                try
+                {
+                    return _loginShiftEnd;
+                }
+                finally { _lock.ExitReadLock(); }
+            }
+            set
+            {
+                _lock.EnterWriteLock();
+                try
+                {
+                    _loginShiftEnd = value;
+                }
+                finally
+                { _lock.ExitWriteLock(); }
+            }
+        }
 
         public bool InBreak(int id)
         {
             return (id == BreakID) && (id > 0);
         }
-
 
         private readonly RemoteOperatorLogsGroupedByOperator remoteOperatorLogs;
         private readonly JGLogData logData;
@@ -2434,12 +2919,27 @@ namespace TPL.TagReaders
         }
 
 
-        public void Login(int machineid, int subid, DateTime login)
+        public void Login(int machineid, int subid, DateTime login, Shift activeShift = null)
         {
             MachineID = machineid;
             SubID = subid;
             LoginTime = login;
             LogoutTime = DateTime.MaxValue;
+
+            // Store active shift info if provided
+            if (activeShift != null)
+            {
+                ActiveShiftId = activeShift.ShiftID;
+                LoginShiftStart = DateTime.Today.Add(activeShift.StartTime);
+                LoginShiftEnd = DateTime.Today.Add(activeShift.EndTime);
+            }
+            else
+            {
+                ActiveShiftId = null;
+                LoginShiftStart = null;
+                LoginShiftEnd = null;
+            }
+
             LogInOut(1);
             IsLoggedIn = true;
         }

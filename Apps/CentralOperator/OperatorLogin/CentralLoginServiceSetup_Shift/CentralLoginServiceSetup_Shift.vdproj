@@ -201,6 +201,20 @@
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:/targetdir=\"[TARGETDIR]\\\" /servicename=Cockpit_Central_Operator_Shift /useshiftmanagement=true"
             }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_E811AAC26A0D417ABC8A4B682DC4B669"
+            {
+            "Name" = "8:Primary output from CentralLoginService (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_45676A1172D2479FA3C0A7665989F3BB"
+            "FileType" = "3:2"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_EAF02824_3B68_43C5_8296_0F1EA364CF6C"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:/targetdir=\"[TARGETDIR]\\\" /servicename=Cockpit_Central_Operator_Shift /useshiftmanagement=true"
+            }
         }
         "DefaultFeature"
         {
@@ -321,7 +335,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TPL.TagReaders, Version=1.0.1.14788, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TPL.TagReaders, Version=1.0.1.15073, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_6F846C6BA34CE254EF63BB0925EE2AAD"
@@ -436,7 +450,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CentralLoginServiceSetup_Shift"
         "ProductCode" = "8:{04D1D72F-C7A9-495F-957E-0D70A9EA41E2}"
-        "PackageCode" = "8:{37350D8D-2648-4708-A9DD-3799237204B6}"
+        "PackageCode" = "8:{AF0033B8-2164-4842-A9BF-BA028D21349D}"
         "UpgradeCode" = "8:{FFE2210C-3C76-44DF-BAD0-142D0635DBFF}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
