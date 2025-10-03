@@ -131,19 +131,19 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\LegacyDotNet3.5\Ge_Mac.DataLayer\Ge_Mac.DataLayer.csproj">
+    <ProjectReference Include="..\..\..\..\..\LegacyDotNet3.5\Ge_Mac.DataLayer\Ge_Mac.DataLayer.csproj">
       <Project>{4D286A31-F0A8-4095-8157-509AA411956F}</Project>
       <Name>Ge_Mac.DataLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\LegacyDotNet3.5\Ge_Mac.Settings\Ge_Mac.Settings\Ge_Mac.Settings.csproj">
+    <ProjectReference Include="..\..\..\..\..\LegacyDotNet3.5\Ge_Mac.Settings\Ge_Mac.Settings\Ge_Mac.Settings.csproj">
       <Project>{20D79745-A4C6-4937-BF9E-0EA063342534}</Project>
       <Name>Ge_Mac.Settings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\Ge_Mac.Controls\GraphicSurface\GraphicSurface\GraphicSurface.csproj">
+    <ProjectReference Include="..\..\..\..\Libraries\Ge_Mac.Controls\GraphicSurface\GraphicSurface\GraphicSurface.csproj">
       <Project>{64741116-D7E2-4EF2-9FEA-3A18AF463C8C}</Project>
       <Name>GraphicSurface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\Ge_Mac.ErrorLog\ErrorLog\ErrorLog.csproj">
+    <ProjectReference Include="..\..\..\..\Libraries\Ge_Mac.ErrorLog\ErrorLog\ErrorLog.csproj">
       <Project>{8632D5AD-4BFE-4C25-8657-E2E5FE95FCF6}</Project>
       <Name>ErrorLog</Name>
     </ProjectReference>

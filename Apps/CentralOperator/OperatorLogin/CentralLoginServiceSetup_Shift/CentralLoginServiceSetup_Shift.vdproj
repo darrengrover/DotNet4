@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:CentralLoginServiceSetup"
+"ProjectName" = "8:CentralLoginServiceSetup_Shift"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -117,7 +117,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\CentralLoginServiceSetup.msi"
+        "OutputFilename" = "8:Debug\\CentralLoginServiceSetup_Shift.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -134,6 +134,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -141,7 +149,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\CentralLoginServiceSetup.msi"
+        "OutputFilename" = "8:Release\\CentralLoginServiceSetup_Shift.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -177,7 +185,7 @@
             "Sequence" = "3:1"
             "Identifier" = "8:_4D80E644_1893_495C_B44A_61444D244B93"
             "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:/targetdir=\"[TARGETDIR]\\\" /servicename=Cockpit_Central_Operator"
+            "CustomActionData" = "8:/targetdir=\"[TARGETDIR]\\\" /servicename=Cockpit_Central_Operator_Shift"
             }
             "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_1973D89B76E84753B9A179CB5CBF1D48"
             {
@@ -191,7 +199,7 @@
             "Sequence" = "3:1"
             "Identifier" = "8:_376AA56D_C378_471C_AD9E_BB70E59ADD63"
             "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:/targetdir=\"[TARGETDIR]\\\" /servicename=Cockpit_Central_Operator /useshiftmanagement=false"
+            "CustomActionData" = "8:/targetdir=\"[TARGETDIR]\\\" /servicename=Cockpit_Central_Operator_Shift /useshiftmanagement=true"
             }
         }
         "DefaultFeature"
@@ -313,7 +321,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TPL.TagReaders, Version=1.0.1.32907, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TPL.TagReaders, Version=1.0.1.14788, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_6F846C6BA34CE254EF63BB0925EE2AAD"
@@ -426,10 +434,10 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:CentralLoginServiceSetup"
-        "ProductCode" = "8:{3817C751-A2F6-4BFB-A003-FAEFB870E076}"
-        "PackageCode" = "8:{5D6BF998-8DDD-42C2-AF15-F34A0C6A7A2B}"
-        "UpgradeCode" = "8:{D2F1A44D-0A48-4932-A957-6DBF6D4E14F8}"
+        "ProductName" = "8:CentralLoginServiceSetup_Shift"
+        "ProductCode" = "8:{04D1D72F-C7A9-495F-957E-0D70A9EA41E2}"
+        "PackageCode" = "8:{37350D8D-2648-4708-A9DD-3799237204B6}"
+        "UpgradeCode" = "8:{FFE2210C-3C76-44DF-BAD0-142D0635DBFF}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
@@ -439,7 +447,7 @@
         "Manufacturer" = "8:Jensen"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:CentralLoginServiceSetup"
+        "Title" = "8:CentralLoginServiceSetup_Shift"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Software Clever"
         "Keywords" = "8:"

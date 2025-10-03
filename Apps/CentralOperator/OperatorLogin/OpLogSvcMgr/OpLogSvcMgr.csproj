@@ -44,11 +44,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libraries\DynamicDataLayer\DynamicDataLayer\DynamicDataLayer.csproj">
+    <ProjectReference Include="..\..\..\..\Libraries\DynamicDataLayer\DynamicDataLayer\DynamicDataLayer.csproj">
       <Project>{96F3F970-B8E4-4CEC-927F-19AE1FD97AE0}</Project>
       <Name>DynamicDataLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\MVVMHelpers\MVVMHelpers.csproj">
+    <ProjectReference Include="..\..\..\..\Libraries\MVVMHelpers\MVVMHelpers.csproj">
       <Project>{F01F92E2-4A49-41BC-9058-CCF8B1E43A0A}</Project>
       <Name>MVVMHelpers</Name>
     </ProjectReference>
