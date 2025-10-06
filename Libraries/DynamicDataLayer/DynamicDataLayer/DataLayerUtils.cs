@@ -3471,11 +3471,20 @@ namespace Dynamic.DataLayer
             dBFieldMappings.AddMapping("MachineRecNum", "MachineRecNum");
             dBFieldMappings.AddMapping("MachineIdJensen", "MachineIdJensen");
             dBFieldMappings.AddMapping("DayOfWeek", "DayOfWeek");
-            dBFieldMappings.AddMapping("DayOfWeekName", "DayOfWeekName");
             dBFieldMappings.AddMapping("IsActive", "IsActive");
             dBFieldMappings.AddMapping("CreatedDate", "CreatedDate");
             PropertyInfo[] pInfos = ListType.GetProperties();
             dBFieldMappings.AddPropertyInfos(pInfos);
+            DefaultSqlSelectCommand = @"SELECT sma.AssignmentID,
+                                        sma.ShiftID,
+                                        sma.MachineRecNum,
+                                        m.IdJensen AS MachineIdJensen,
+                                        sma.DayOfWeek,
+                                        sma.IsActive,
+                                        sma.CreatedDate
+                                    FROM 
+                                        JEGR_Utils.dbo.tblShiftMachineAssignments sma
+                                        INNER JOIN JEGR_DB.dbo.tblMachines m ON sma.MachineRecNum = m.RecNum";
         }
     }
 
@@ -3485,9 +3494,8 @@ namespace Dynamic.DataLayer
         private int assignmentID;
         private int shiftID;
         private int machineRecNum;
-        private string machineIdJensen;
+        private int machineIdJensen;
         private int dayOfWeek;
-        private string dayOfWeekName;
         private bool isActive;
         private DateTime createdDate;
         #endregion
@@ -3520,7 +3528,7 @@ namespace Dynamic.DataLayer
             set { machineRecNum = AssignNotify(ref machineRecNum, value, "MachineRecNum"); }
         }
 
-        public string MachineIdJensen
+        public int MachineIdJensen
         {
             get { return machineIdJensen; }
             set { machineIdJensen = AssignNotify(ref machineIdJensen, value, "MachineIdJensen"); }
@@ -3534,8 +3542,10 @@ namespace Dynamic.DataLayer
 
         public string DayOfWeekName
         {
-            get { return dayOfWeekName; }
-            set { dayOfWeekName = AssignNotify(ref dayOfWeekName, value, "DayOfWeekName"); }
+            get
+            {
+                return ((DayOfWeek)dayOfWeek).ToString();
+            }
         }
 
         public bool IsActive

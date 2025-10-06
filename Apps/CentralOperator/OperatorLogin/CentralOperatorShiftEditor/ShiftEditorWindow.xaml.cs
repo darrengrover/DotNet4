@@ -419,38 +419,14 @@ namespace CentralOperatorShiftEditor
         private void PopulateAssignmentLookupFields(ShiftMachineAssignment assignment)
         {
             // Populate MachineIdJensen if not already set
-            if (string.IsNullOrEmpty(assignment.MachineIdJensen))
+            if (assignment.MachineIdJensen > 0)
             {
                 var machines = dataAccess.GetAllMachines(null, false);
                 var machine = machines.Cast<Machine>().FirstOrDefault(m => m.RecNum == assignment.MachineRecNum);
                 if (machine != null)
                 {
-                    assignment.MachineIdJensen = machine.IdJensen.ToString();
+                    assignment.MachineIdJensen = machine.IdJensen;
                 }
-            }
-
-            // Populate DayOfWeekName if not already set
-            if (string.IsNullOrEmpty(assignment.DayOfWeekName))
-            {
-                assignment.DayOfWeekName = GetDayOfWeekName(assignment.DayOfWeek);
-            }
-        }
-
-        /// <summary>
-        /// Converts day of week number to name
-        /// </summary>
-        private string GetDayOfWeekName(int dayOfWeek)
-        {
-            switch (dayOfWeek)
-            {
-                case 1: return "Sunday";
-                case 2: return "Monday";
-                case 3: return "Tuesday";
-                case 4: return "Wednesday";
-                case 5: return "Thursday";
-                case 6: return "Friday";
-                case 7: return "Saturday";
-                default: return "Unknown";
             }
         }
 

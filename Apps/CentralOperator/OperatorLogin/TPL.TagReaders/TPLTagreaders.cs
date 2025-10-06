@@ -751,27 +751,27 @@ namespace TPL.TagReaders
         /// <summary>
         /// Gets the active shift for a machine at the current time
         /// </summary>
-        /// <param name="machineID">Machine ID</param>
+        /// <param name="machine_idJensen">Machine ID</param>
         /// <returns>Active Shift or null if no shift is active</returns>
-        private Shift GetActiveShift(int machineID)
+        private Shift GetActiveShift(int machine_idJensen)
         {
-            return GetActiveShift(machineID, DateTime.Now);
+            return GetActiveShift(machine_idJensen, DateTime.Now);
         }
 
         /// <summary>
         /// Gets the active shift for a machine at a specific time
         /// </summary>
-        private Shift GetActiveShift(int machineID, DateTime checkTime)
+        private Shift GetActiveShift(int machine_idJensen, DateTime checkTime)
         {
             try
             {
                 DayOfWeek currentDay = checkTime.DayOfWeek;
                 TimeSpan currentTimeOfDay = checkTime.TimeOfDay;
-
+                int dayInt = (int)currentDay;
                 // Get all shift assignments for this machine on this day of week
                 var assignments = shiftMachineAssignments
                     .OfType<ShiftMachineAssignment>()
-                    .Where(a => a.MachineRecNum == machineID
+                    .Where(a => a.MachineIdJensen == machine_idJensen
                              && a.DayOfWeek == (int)currentDay
                              && a.IsActive)
                     .ToList();
@@ -896,14 +896,6 @@ namespace TPL.TagReaders
                 debugInfo($"IsWithinShiftDelta error: {ex.Message}");
                 return true; // On error, allow logout (fail-safe)
             }
-        }
-
-        /// <summary>
-        /// Helper to check if a machine has any active shift at the current time
-        /// </summary>
-        private bool MachineHasActiveShift(int machineID)
-        {
-            return GetActiveShift(machineID) != null;
         }
         public void ReloadData(bool useCache)
         {
@@ -1210,10 +1202,10 @@ namespace TPL.TagReaders
         {
             try
             {
-                int machineid = 0;
+                int machine_idJensen = 0;
                 int subid = 0;
                 bool canLogin = true;
-                string cardID = tcpReader.ReadCardID(out machineid, out subid);
+                string cardID = tcpReader.ReadCardID(out machine_idJensen, out subid);
                 //string cardID = TestHarness(tcpReader.LocationID, out machineid, out subid);
                 if (cardID != string.Empty)
                 {
@@ -1232,7 +1224,7 @@ namespace TPL.TagReaders
                             bool withinDelta = true;
                             if (UseShiftManagement)
                             {
-                                activeShift = GetActiveShift(machineid);
+                                activeShift = GetActiveShift(machine_idJensen);
                                 machineHasActiveShift = (activeShift != null);
 
                                 if (machineHasActiveShift)
@@ -1241,7 +1233,7 @@ namespace TPL.TagReaders
 
                                     if (DebugMode)
                                     {
-                                        debugInfo($"Shift Active: Machine {machineid}, Shift {activeShift.ShiftName} " +
+                                        debugInfo($"Shift Active: Machine {machine_idJensen}, Shift {activeShift.ShiftName} " +
                                                  $"({activeShift.StartTime} - {activeShift.EndTime}), " +
                                                  $"Within Delta: {withinDelta}");
                                     }
@@ -1260,7 +1252,7 @@ namespace TPL.TagReaders
                                 }
                                 if (opState.IsLoggedIn) //this operator is logged in
                                 {
-                                    if ((opState.MachineID == machineid) && (opState.SubID == subid)) //this machine station?
+                                    if ((opState.MachineID == machine_idJensen) && (opState.SubID == subid)) //this machine station?
                                     {
                                         // ============ STEP 7 CHANGES - SAME LOCATION LOGOUT ============
                                         // Check shift restrictions for logout
@@ -1269,7 +1261,7 @@ namespace TPL.TagReaders
                                             // Outside delta period - operator CANNOT manually logout
                                             canLogin = false;
                                             debugInfo($"Shift Management | Logout Denied - Outside Delta Period | " +
-                                                     $"Machine {machineid}, Sub {subid}, Operator {op.NameAndID}");
+                                                     $"Machine {machine_idJensen}, Sub {subid}, Operator {op.NameAndID}");
                                             tcpReader.OrangeLED();
                                         }
                                         else
@@ -1286,7 +1278,7 @@ namespace TPL.TagReaders
                                             {
                                                 canLogin = false;
                                                 debugInfo($"Operator Permission | Logout Disallowed | " +
-                                                         $"Machine {machineid}, Sub {subid}, Operator {op.NameAndID}");
+                                                         $"Machine {machine_idJensen}, Sub {subid}, Operator {op.NameAndID}");
                                                 tcpReader.OrangeLED();
                                             }
                                         }
@@ -1352,30 +1344,26 @@ namespace TPL.TagReaders
 
                                     if (tcpReader.MaxLogins == 1)  //if !allow multi then logout
                                     {
-                                        OperatorLoginState otherOperator = OperatorStates.GetLoggedInByMachineSubID(machineid, subid);
+                                        OperatorLoginState otherOperator = OperatorStates.GetLoggedInByMachineSubID(machine_idJensen, subid);
                                         if (otherOperator != null) //another operator is logged in here!
                                         {
                                             // Check if we can replace the other operator
                                             bool canReplace = true;
 
+                                            // Shift is active and outside delta period
                                             if (UseShiftManagement && machineHasActiveShift && !withinDelta)
                                             {
-                                                // Shift is active and outside delta period
-                                                if (UseShiftManagement && machineHasActiveShift && !withinDelta)
+                                                if (!OperatorCanReplace(t.ReferenceID))
                                                 {
-                                                    if (UseOperatorPermissions && !OperatorCanReplace(t.ReferenceID))
-                                                    {
-                                                        canReplace = false;
-                                                        canLogin = false;
-                                                        debugInfo($"Shift Management | Cannot Replace Operator | " +
-                                                                 $"Machine {machineid}, Sub {subid}, " +
-                                                                 $"Attempting: {op.NameAndID}, " +
-                                                                 $"Current: Operator {otherOperator.OperatorID}");
-                                                        tcpReader.OrangeLED();
-                                                    }
+                                                    canReplace = false;
+                                                    canLogin = false;
+                                                    debugInfo($"Shift Management | Cannot Replace Operator | " +
+                                                                $"Machine {machine_idJensen}, Sub {subid}, " +
+                                                                $"Attempting: {op.NameAndID}, " +
+                                                                $"Current: Operator {otherOperator.OperatorID}");
+                                                    tcpReader.OrangeLED();
                                                 }
-                                            }
-
+                                            }                                          
                                             if (canReplace)
                                             {
                                                 otherOperator.Logout(DateTime.Now);
@@ -1385,9 +1373,9 @@ namespace TPL.TagReaders
 
                                     // ============ END STEP 9 CHANGES ============
 
-                                    if (canLogin && OperatorStates.TotalLoggedInByMachineSubID(machineid, subid) < tcpReader.MaxLogins)
+                                    if (canLogin && OperatorStates.TotalLoggedInByMachineSubID(machine_idJensen, subid) < tcpReader.MaxLogins)
                                     {
-                                        opState.Login(machineid, subid, DateTime.Now, activeShift);//login this user
+                                        opState.Login(machine_idJensen, subid, DateTime.Now, activeShift);//login this user
                                         tcpReader.GreenLED();
                                         tcpReader.IsActiveStation = true;
                                     }
@@ -1396,7 +1384,7 @@ namespace TPL.TagReaders
                                 else
                                 {
                                     // if there are still operators logged on to this station - make the light green again.
-                                    if (OperatorStates.TotalLoggedInByMachineSubID(machineid, subid) > 0)
+                                    if (OperatorStates.TotalLoggedInByMachineSubID(machine_idJensen, subid) > 0)
                                     {
                                         tcpReader.GreenLED();
                                         tcpReader.IsActiveStation = true;
@@ -1409,7 +1397,7 @@ namespace TPL.TagReaders
                         else
                         {
                             //operator is retired  
-                            debugInfo("Retired | Bad Read | " + machineid.ToString() + ", " + subid.ToString() + ", " + op.NameAndID + Environment.NewLine);
+                            debugInfo("Retired | Bad Read | " + machine_idJensen.ToString() + ", " + subid.ToString() + ", " + op.NameAndID + Environment.NewLine);
                             tcpReader.OrangeLED();
                             tcpReader.HasBadRead = true;
                             tcpReader.BadReadTime = DateTime.Now;
@@ -1418,7 +1406,7 @@ namespace TPL.TagReaders
                     else
                     {
                         //invalid tag
-                        debugInfo("Invalid | Bad Read | " + machineid.ToString() + ", " + subid.ToString());
+                        debugInfo("Invalid | Bad Read | " + machine_idJensen.ToString() + ", " + subid.ToString());
                         tcpReader.OrangeLED();
                         tcpReader.HasBadRead = true;
                         tcpReader.BadReadTime = DateTime.Now;
@@ -1445,26 +1433,23 @@ namespace TPL.TagReaders
                         }
                     }
                 }
-                if (tcpReader.UpdateLEDNow)
+                // ensure the card reader is in the correct state
+                OperatorLoginState refreshOpState = (OperatorLoginState)OperatorStates.GetLoggedInByMachineSubID(tcpReader.MachineID, tcpReader.SubID);
+                if (refreshOpState != null)
                 {
-                    //debugInfo("Update led now"+Environment.NewLine);
-                    OperatorLoginState opState = (OperatorLoginState)OperatorStates.GetLoggedInByMachineSubID(tcpReader.MachineID, tcpReader.SubID);
-                    if (opState != null)
+                    //Debug.WriteLine("update all leds now " + tcpReader.MachineID + ", " + tcpReader.SubID + " Operator " + opState.OperatorID + " loggedin " + opState.IsLoggedIn);
+                    if (refreshOpState.IsLoggedIn)
                     {
-                        //Debug.WriteLine("update all leds now " + tcpReader.MachineID + ", " + tcpReader.SubID + " Operator " + opState.OperatorID + " loggedin " + opState.IsLoggedIn);
-                        if (opState.IsLoggedIn)
-                        {
-                            tcpReader.GreenLED();
-                        }
-                        else
-                        {
-                            tcpReader.RedLED();
-                        }
+                        tcpReader.GreenLED();
                     }
                     else
+                    {
                         tcpReader.RedLED();
-                    tcpReader.UpdateLEDNow = false;
+                    }
                 }
+                else
+                    tcpReader.RedLED();
+
                 string fb;
                 while (tcpReader.IsFeedBack)
                 {

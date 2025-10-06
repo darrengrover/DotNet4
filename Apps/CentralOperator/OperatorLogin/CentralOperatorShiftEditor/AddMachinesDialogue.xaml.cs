@@ -72,7 +72,7 @@ namespace CentralOperatorShiftEditor
                     var item = new MachineSelectionItem
                     {
                         RecNum = ((Machine)machine).RecNum,
-                        IdJensen = ((Machine)machine).IdJensen.ToString(),
+                        IdJensen = ((Machine)machine).IdJensen,
                         Description = ((Machine)machine).ShortDescription ?? "",
                         IsSelected = false,
                         IsAlreadyAssigned = assignedMachineIds.Contains(((Machine)machine).RecNum)
@@ -115,7 +115,7 @@ namespace CentralOperatorShiftEditor
             else
             {
                 filteredMachines = allMachines.Where(m =>
-                    m.IdJensen.ToLower().Contains(searchText) ||
+                    m.IdJensen.ToString().Contains(searchText) ||
                     m.Description.ToLower().Contains(searchText) ||
                     m.RecNum.ToString().Contains(searchText)
                 ).ToList();
@@ -236,7 +236,6 @@ namespace CentralOperatorShiftEditor
                             MachineRecNum = machine.RecNum,
                             MachineIdJensen = machine.IdJensen,
                             DayOfWeek = day.Key,
-                            DayOfWeekName = day.Value,
                             IsActive = true,
                             CreatedDate = DateTime.Now,
                             ForceNew = true
@@ -271,13 +270,13 @@ namespace CentralOperatorShiftEditor
         {
             var days = new Dictionary<int, string>();
 
-            if (chkSunday.IsChecked == true) days.Add(1, "Sunday");
-            if (chkMonday.IsChecked == true) days.Add(2, "Monday");
-            if (chkTuesday.IsChecked == true) days.Add(3, "Tuesday");
-            if (chkWednesday.IsChecked == true) days.Add(4, "Wednesday");
-            if (chkThursday.IsChecked == true) days.Add(5, "Thursday");
-            if (chkFriday.IsChecked == true) days.Add(6, "Friday");
-            if (chkSaturday.IsChecked == true) days.Add(7, "Saturday");
+            if (chkSunday.IsChecked == true) days.Add(0, "Sunday");
+            if (chkMonday.IsChecked == true) days.Add(1, "Monday");
+            if (chkTuesday.IsChecked == true) days.Add(2, "Tuesday");
+            if (chkWednesday.IsChecked == true) days.Add(3, "Wednesday");
+            if (chkThursday.IsChecked == true) days.Add(4, "Thursday");
+            if (chkFriday.IsChecked == true) days.Add(5, "Friday");
+            if (chkSaturday.IsChecked == true) days.Add(6, "Saturday");
 
             return days;
         }
@@ -295,7 +294,7 @@ namespace CentralOperatorShiftEditor
         private bool isSelected;
 
         public int RecNum { get; set; }
-        public string IdJensen { get; set; }
+        public int IdJensen { get; set; }
         public string Description { get; set; }
         public bool IsAlreadyAssigned { get; set; }
 

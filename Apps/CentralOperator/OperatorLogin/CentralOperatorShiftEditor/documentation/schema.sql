@@ -25,14 +25,14 @@ CREATE TABLE tblShiftMachineAssignments (
     AssignmentID int IDENTITY(1,1) PRIMARY KEY,
     ShiftID int NOT NULL,
     MachineRecNum int NOT NULL, -- FK to JEGR_DB machine table RecNum
-    DayOfWeek tinyint NOT NULL, -- 1=Sunday, 2=Monday, 3=Tuesday, etc.
+    DayOfWeek tinyint NOT NULL, -- 0=Sunday, 1=Monday, 2=Tuesday, etc.
     IsActive bit NOT NULL DEFAULT 1,
     CreatedDate datetime NOT NULL DEFAULT GETDATE(),
     
     CONSTRAINT FK_tblShiftMachineAssignments_ShiftID 
         FOREIGN KEY (ShiftID) REFERENCES tblShifts(ShiftID),
     CONSTRAINT CK_tblShiftMachineAssignments_DayOfWeek 
-        CHECK (DayOfWeek BETWEEN 1 AND 7),
+        CHECK (DayOfWeek BETWEEN 0 AND 6),
     
     -- Unique constraint to prevent duplicate assignments
     CONSTRAINT UQ_tblShiftMachineAssignments_Machine_Day_Shift 

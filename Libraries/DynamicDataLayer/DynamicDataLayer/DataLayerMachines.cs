@@ -942,7 +942,7 @@ namespace Dynamic.DataLayer
     #endregion
 
     #region MachineAliases
-
+        
     partial class SqlDataAccess
     {
         public MachineAliases GetAllMachineAliases(MachineAliases recs, bool noCacheRead)
