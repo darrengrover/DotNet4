@@ -61,17 +61,6 @@ namespace CentralLoginService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=jegr_server;Initial Catalog=JEGR_DB;Persist Security Info=True;User I" +
-            "D=sa;Password=Jen&excellent")]
-        public string JEGRConnection {
-            get {
-                return ((string)(this["JEGRConnection"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool UseShiftManagement {
             get {
@@ -85,6 +74,17 @@ namespace CentralLoginService.Properties {
         public string ServiceName {
             get {
                 return ((string)(this["ServiceName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=SWC20231112;Initial Catalog=JEGR_DB;Persist Security Info=True;User I" +
+            "D=sa;Password=Jen&excellent")]
+        public string JEGRConnection {
+            get {
+                return ((string)(this["JEGRConnection"]));
             }
         }
     }

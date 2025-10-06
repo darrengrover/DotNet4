@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 class Program
 {
     static bool _verbose = false;
+    static bool _running = true;
 
     static async Task Main(string[] args)
     {
@@ -15,55 +16,142 @@ class Program
             port = p;
         }
 
-        var listener = new TcpListener(IPAddress.Loopback, port);
-        listener.Start();
-        Console.WriteLine($"Card reader emulator listening on {port}");
-        Console.WriteLine("Commands: [hex card ID] to queue card, 'verbose' to toggle debug output");
+        Console.WriteLine($"Card reader emulator starting on port {port}");
+        Console.WriteLine("Commands:");
+        Console.WriteLine("  [hex card ID] - Queue card read (e.g., '7C339600' or '0x7C339600')");
+        Console.WriteLine("  'verbose'     - Toggle debug output");
+        Console.WriteLine("  'quit'        - Exit emulator");
         Console.WriteLine();
 
         var cards = new ConcurrentQueue<string>();
+
+        // Console input handler
         _ = Task.Run(() =>
         {
-            while (true)
+            while (_running)
             {
-                var line = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(line))
-                    continue;
-                line = line.Trim();
-
-                if (line.Equals("verbose", StringComparison.OrdinalIgnoreCase))
+                try
                 {
-                    _verbose = !_verbose;
-                    Console.WriteLine($">>> Verbose logging: {(_verbose ? "ON" : "OFF")}");
-                    continue;
+                    var line = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
+                    line = line.Trim();
+
+                    if (line.Equals("verbose", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _verbose = !_verbose;
+                        Console.WriteLine($">>> Verbose logging: {(_verbose ? "ON" : "OFF")}");
+                        continue;
+                    }
+
+                    if (line.Equals("quit", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine(">>> Shutting down...");
+                        _running = false;
+                        break;
+                    }
+
+                    if (line.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+                        line = line.Substring(2);
+
+                    cards.Enqueue(line.ToUpperInvariant());
+                    Console.WriteLine($">>> Queued card: {line}");
                 }
-
-                if (line.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-                    line = line.Substring(2);
-
-                cards.Enqueue(line.ToUpperInvariant());
-                Console.WriteLine($">>> Queued card: {line}");
+                catch (Exception ex)
+                {
+                    Console.WriteLine($">>> Input handler error: {ex.Message}");
+                }
             }
         });
 
-        while (true)
+        // Main server loop with reconnection
+        while (_running)
         {
-            using var client = await listener.AcceptTcpClientAsync();
-            Console.WriteLine(">>> Client CONNECTED");
-            using var stream = client.GetStream();
-            using var reader = new StreamReader(stream, Encoding.ASCII);
-            using var writer = new StreamWriter(stream, Encoding.ASCII) { NewLine = "\r\n", AutoFlush = true };
-
-            while (client.Connected)
+            TcpListener listener = null;
+            try
             {
-                var cmd = await reader.ReadLineAsync();
+                listener = new TcpListener(IPAddress.Loopback, port);
+                listener.Start();
+                Console.WriteLine($">>> Listening on port {port}...");
+
+                while (_running)
+                {
+                    // Wait for client with cancellation support
+                    var acceptTask = listener.AcceptTcpClientAsync();
+                    var delayTask = Task.Delay(500); // Check _running flag every 500ms
+                    var completedTask = await Task.WhenAny(acceptTask, delayTask);
+
+                    if (completedTask == delayTask)
+                    {
+                        // Timeout - check if we should continue
+                        continue;
+                    }
+
+                    using var client = await acceptTask;
+                    Console.WriteLine(">>> Client CONNECTED");
+
+                    try
+                    {
+                        await HandleClient(client, cards);
+                    }
+                    catch (IOException ioEx) when (ioEx.InnerException is SocketException)
+                    {
+                        Console.WriteLine(">>> Client DISCONNECTED (connection closed by remote host)");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($">>> Client error: {ex.GetType().Name}: {ex.Message}");
+                    }
+
+                    Console.WriteLine(">>> Ready for next connection...");
+                }
+            }
+            catch (SocketException sockEx)
+            {
+                Console.WriteLine($">>> Socket error: {sockEx.Message}");
+                Console.WriteLine(">>> Retrying in 2 seconds...");
+                await Task.Delay(2000);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($">>> Unexpected error: {ex.GetType().Name}: {ex.Message}");
+                await Task.Delay(2000);
+            }
+            finally
+            {
+                listener?.Stop();
+            }
+        }
+
+        Console.WriteLine(">>> Emulator stopped");
+    }
+
+    static async Task HandleClient(TcpClient client, ConcurrentQueue<string> cards)
+    {
+        using var stream = client.GetStream();
+        using var reader = new StreamReader(stream, Encoding.ASCII);
+        using var writer = new StreamWriter(stream, Encoding.ASCII) { NewLine = "\r\n", AutoFlush = true };
+
+        while (client.Connected && _running)
+        {
+            string cmd;
+            try
+            {
+                cmd = await reader.ReadLineAsync();
                 if (cmd == null)
-                    break;
+                    break; // Connection closed gracefully
+            }
+            catch (IOException)
+            {
+                // Connection lost while reading
+                throw;
+            }
 
-                // ONLY log if verbose mode is ON
-                if (_verbose)
-                    Console.WriteLine($"RX: {cmd}");
+            if (_verbose)
+                Console.WriteLine($"RX: {cmd}");
 
+            try
+            {
                 if (cmd.StartsWith("rfid:qid.id", StringComparison.OrdinalIgnoreCase))
                 {
                     if (!cards.TryDequeue(out var card))
@@ -82,6 +170,21 @@ class Program
                     if (_verbose)
                         Console.WriteLine("TX: rfid:dev.luid=1");
                 }
+                else if (cmd.StartsWith("rfid:out.led=", StringComparison.OrdinalIgnoreCase))
+                {
+                    // LED command
+                    var ledValue = cmd.Substring("rfid:out.led=".Length);
+                    if (_verbose)
+                        Console.WriteLine($">>> LED set to: {ledValue}");
+                    await writer.WriteLineAsync("OK");
+                }
+                else if (cmd.StartsWith("rfid:cmd.", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Config commands (echo, prompt, etc.)
+                    if (_verbose)
+                        Console.WriteLine($">>> Config: {cmd}");
+                    await writer.WriteLineAsync("OK");
+                }
                 else
                 {
                     await writer.WriteLineAsync("OK");
@@ -89,7 +192,11 @@ class Program
                         Console.WriteLine("TX: OK");
                 }
             }
-            Console.WriteLine(">>> Client DISCONNECTED");
+            catch (IOException)
+            {
+                // Connection lost while writing
+                throw;
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dynamic.DataLayer;
 using MVVMHelpers;
+using TagReaderShared;
 
 namespace TPL.TagReaders
 {
@@ -371,6 +372,8 @@ namespace TPL.TagReaders
         private ShiftMachineAssignments shiftMachineAssignments;
         private ShiftSettings shiftSettings;
         private OperatorSettings operatorSettings;
+
+        private SharedReaderStatus sharedStatus;
         public TPLTagReaders()
         {
             
@@ -392,7 +395,7 @@ namespace TPL.TagReaders
             shifts = new Shifts();
             shiftMachineAssignments = new ShiftMachineAssignments();
             shiftSettings = new ShiftSettings();
-            operatorSettings = new OperatorSettings();
+            operatorSettings = new OperatorSettings();         
             da = SqlDataAccess.Singleton;
             GetData();        
         }
@@ -433,6 +436,7 @@ namespace TPL.TagReaders
         private void addTcpReader(int locationid, string ip, int port, int machine, int sub, int maxlogins)
         {
             RfIdeasTcpReader tcpReader = new RfIdeasTcpReader(locationid, ip, port, machine, sub, maxlogins, DebugMode);
+            tcpReader.OnStatusChanged = UpdateSingleReaderStatus;
             TcpReaders.Add(tcpReader);
         }
         private void getShiftData(bool useCache)
@@ -1008,15 +1012,46 @@ namespace TPL.TagReaders
 
         public void Start()
         {
+            sharedStatus = SharedReaderStatus.CreatePublisher();
             ReloadData(false);
             InitialiseReaderConnections();
             SetUpdateAllLEDsNow();
         }
-
+        private ReaderStatusDto CreateReaderStatusDto(RfIdeasTcpReader reader)
+        {
+            return new ReaderStatusDto
+            {
+                LocationId = reader.LocationID,
+                MachineId = reader.MachineID,
+                SubId = reader.SubID,
+                IsConnected = reader.IsConnected,
+                LedColor = reader.CurrentLED ?? "GREY",
+                IsActiveStation = reader.IsActiveStation,
+                IpAddress = reader.IpAddress,
+                Port = reader.Port,
+                LastUpdate = DateTime.Now
+            };
+        }
+        private void UpdateSingleReaderStatus(RfIdeasTcpReader reader)
+        {
+            try
+            {
+                var dto = CreateReaderStatusDto(reader);
+                feedback($"[SHARED MEM] Loc={dto.LocationId}, M={dto.MachineId}, S={dto.SubId}, Conn={dto.IsConnected}, LED={dto.LedColor}, Active={dto.IsActiveStation}");
+                sharedStatus.UpdateSingleReader(dto);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"UpdateSingleReaderStatus error: {ex.Message}");
+                feedback($"UpdateSingleReaderStatus error: {ex.Message}");
+            }
+        }
         public void InitialiseReaderConnections()
         {
+            var statuses = new List<ReaderStatusDto>();
             foreach (RfIdeasTcpReader tcpReader in TcpReaders)
             {
+                statuses.Add(CreateReaderStatusDto(tcpReader));
                 OperatorLoginState opState = (OperatorLoginState)OperatorStates.GetByMachineSubID(tcpReader.MachineID,tcpReader.SubID);
                 bool isloggedin = false;
                 if (opState != null)
@@ -1024,6 +1059,7 @@ namespace TPL.TagReaders
                 tcpReader.AllowFeedback = DebugMode;
                 tcpReader.StartMonitorTask(isloggedin);
             }
+            sharedStatus.UpdateAllReaders(statuses);
         }
 
         public void PingReaders()
@@ -1449,7 +1485,10 @@ namespace TPL.TagReaders
             foreach (RfIdeasTcpReader tcpReader in TcpReaders)
             {
                 tcpReader.Disconnect();
+                tcpReader.CurrentLED = "GREY";
+                UpdateSingleReaderStatus(tcpReader);
             }
+            sharedStatus?.Dispose();
         }
 
         public void clearExcessData()
@@ -1546,6 +1585,8 @@ namespace TPL.TagReaders
         private StringQueue CommandQ;
         private StringQueue CardReadQ;
         private StringQueue FeedbackQ;
+
+        public Action<RfIdeasTcpReader> OnStatusChanged { get; set; }
 
         private bool _updateLEDNow = true;
         public bool UpdateLEDNow
@@ -1691,10 +1732,6 @@ namespace TPL.TagReaders
                 }
             }
         }
-
-        public CancellationTokenSource cancellationTokenSource;
-
-        private CancellationToken cancellationToken;
 
         private Task commsTask;
 
@@ -2082,6 +2119,7 @@ namespace TPL.TagReaders
                     {
                         isConnected = value;
                         NotifyPropertyChanged("IsConnected");
+                        OnStatusChanged?.Invoke(this);
                     }
                     finally
                     {
@@ -2127,15 +2165,12 @@ namespace TPL.TagReaders
 
         public bool StartMonitorTask(bool loggedin)
         {
-            cancellationTokenSource = new CancellationTokenSource();
-            cancellationToken = cancellationTokenSource.Token;
             IsGo = true;
             Task MonitorTask;
             MonitorTask = new Task(new Action<object>(MonitorCommsProcess), loggedin);
             MonitorTask.Start();
             return true;
         }
-
         public void MonitorCommsProcess(Object obj)
         {
             try
@@ -2150,19 +2185,21 @@ namespace TPL.TagReaders
                         GreenLED();
                     else
                         RedLED();
-                    //Debug.WriteLine("MonitorCommsProcess for " + IpAddress.ToString());
-                    commsTask = new Task(() => commsProcess(), cancellationToken);
-                    commsTask.Start();
-                    try
+
+                    using (var cts = new CancellationTokenSource())
                     {
-                        Task.WaitAny(commsTask);
-                        cancellationToken.WaitHandle.WaitOne(1000);//cool off period before starting new task
-                        //Debug.WriteLine("Stopped Monitor Comms Process");
-                    }
-                    catch (AggregateException ex)
-                    {
-                        Debug.WriteLine("MonitorCommsProcess" + ex.Message);
-                        if (allowFeedback) FeedbackQ.Enqueue("MonitorCommsProcess" + ex.Message);
+                        commsTask = new Task(() => commsProcess(cts.Token), cts.Token);
+                        commsTask.Start();
+                        try
+                        {
+                            Task.WaitAny(commsTask);
+                            Thread.Sleep(2000); // Simple sleep instead of token wait
+                        }
+                        catch (AggregateException ex)
+                        {
+                            Debug.WriteLine("MonitorCommsProcess" + ex.Message);
+                            if (allowFeedback) FeedbackQ.Enqueue("MonitorCommsProcess" + ex.Message);
+                        }
                     }
                 }
             }
@@ -2179,7 +2216,9 @@ namespace TPL.TagReaders
             {
                 IsConnected = false;
                 IsGo = false;
-                cancellationTokenSource.Cancel();
+
+                // Wait a bit for tasks to finish
+                Thread.Sleep(100);
             }
             catch (Exception ex)
             {
@@ -2252,24 +2291,28 @@ namespace TPL.TagReaders
         {
             SendCommand("rfid:out.led=1");
             CurrentLED = "RED";
+            OnStatusChanged?.Invoke(this);
         }
 
         public void GreenLED()
         {
             SendCommand("rfid:out.led=2");
             CurrentLED = "GREEN";
+            OnStatusChanged?.Invoke(this);
         }
 
         public void OrangeLED()
         {
             SendCommand("rfid:out.led=3");
             CurrentLED = "ORANGE";
+            OnStatusChanged?.Invoke(this);
         }
 
         public void NoLED()
         {
             SendCommand("rfid:out.led=0");
             CurrentLED = "NO LED";
+            OnStatusChanged?.Invoke(this);
         }
 
         public void Beep()
@@ -2308,7 +2351,7 @@ namespace TPL.TagReaders
             return test;
         }
 
-        private void commsProcess()
+        private void commsProcess(CancellationToken token)
         {
             Debug.WriteLine("commsProcess for " + ipAddress.ToString());
             TcpClient tcpClient = null;
@@ -2316,59 +2359,51 @@ namespace TPL.TagReaders
             int nocardCount = 0;
             try
             {
-                if (!error)
+                if (!error && !token.IsCancellationRequested)
                 {
                     tcpClient = new TcpClient();
                     tcpClient.Connect(ipAddress, port);
                     IsConnected = tcpClient.Connected;
-                    error = !isConnected;
-                    
-                    while (IsGo && !error)
-                    {   //wait for command    
+                    error = !IsConnected;
+
+                    while (IsGo && !error && !token.IsCancellationRequested)
+                    {
                         if (CommandQ.Count > 0)
                         {
                             string cmd;
                             bool gotCommand = CommandQ.TryDequeue(out cmd);
                             if (gotCommand)
-                            {   //send command 
-                                //if (allowFeedback)
-                                //    FeedbackQ.Enqueue("sending command " + cmd + " to " + ipAddress.ToString());
+                            {
                                 string aString = string.Empty;
                                 try
                                 {
-                                    if (tcpClient != null)
+                                    if (tcpClient != null && tcpClient.Connected)
                                     {
-                                        if (tcpClient.Connected)
+                                        String str = cmd + Environment.NewLine;
+                                        NetworkStream stm = tcpClient.GetStream();
+
+                                        ASCIIEncoding asen = new ASCIIEncoding();
+                                        byte[] ba = asen.GetBytes(str);
+
+                                        stm.Write(ba, 0, ba.Length);
+
+                                        byte[] bb = new byte[100];
+                                        while (stm.DataAvailable)
                                         {
-                                            String str = cmd + Environment.NewLine;
-                                            NetworkStream stm = tcpClient.GetStream();
-
-                                            ASCIIEncoding asen = new ASCIIEncoding();
-                                            byte[] ba = asen.GetBytes(str);
-
-                                            stm.Write(ba, 0, ba.Length);
-
-                                            byte[] bb = new byte[100];
-                                            while (stm.DataAvailable)
+                                            int k = stm.Read(bb, 0, 100);
+                                            for (int i = 0; i < k; i++)
                                             {
-                                                int k = stm.Read(bb, 0, 100);
-                                                for (int i = 0; i < k; i++)
-                                                {
-                                                    char achar=Convert.ToChar(bb[i]);
-                                                    if ((achar=='\n')||(achar=='\r'))
-                                                        achar=' ';
-                                                    aString += achar;
-                                                }
-                                                aString += Environment.NewLine;
-                                                //Debug.WriteLine("Read " + k + " bytes " + aString);                                          
+                                                char achar = Convert.ToChar(bb[i]);
+                                                if ((achar == '\n') || (achar == '\r'))
+                                                    achar = ' ';
+                                                aString += achar;
                                             }
-                                            if (stm.DataAvailable)
-                                            {
-                                                Debug.WriteLine("Read overflow");
-                                            }
-
+                                            aString += Environment.NewLine;
                                         }
-                                        else error = true;
+                                        if (stm.DataAvailable)
+                                        {
+                                            Debug.WriteLine("Read overflow");
+                                        }
                                     }
                                     else error = true;
                                 }
@@ -2377,29 +2412,29 @@ namespace TPL.TagReaders
                                     error = true;
                                     if (allowFeedback) FeedbackQ.Enqueue("commsProcess " + ex.Message);
                                 }
-                                //queue response
+
                                 if (aString != string.Empty)
                                 {
-                                    //Debug.WriteLine("reader response " + aString);
-                                    if (!(aString.Contains("{0x0000,0,0x00,0;0x00}")||(aString.Contains("{0xFFFF,0,0x00,0;0x00}")))) //test for no card
+                                    if (!(aString.Contains("{0x0000,0,0x00,0;0x00}") || (aString.Contains("{0xFFFF,0,0x00,0;0x00}"))))
                                     {
                                         CardReadQ.Enqueue(aString);
-                                        //if (allowFeedback) FeedbackQ.Enqueue("Card Read: " + aString);
                                         nocardCount = 0;
                                     }
                                     else
                                     {
                                         if ((allowFeedback) && (nocardCount == 0))
                                         {
-                                            //FeedbackQ.Enqueue("No Card"); // this is written a lot and is fairly pointless.
                                             nocardCount++;
                                         }
                                     }
                                 }
                             }
-                            else cancellationToken.WaitHandle.WaitOne(10);
+                            else
+                            {
+                                token.WaitHandle.WaitOne(10);
+                            }
                         }
-                        cancellationToken.WaitHandle.WaitOne(100);
+                        token.WaitHandle.WaitOne(100);
                     }
                 }
             }
@@ -2411,13 +2446,17 @@ namespace TPL.TagReaders
             {
                 if (tcpClient != null)
                     tcpClient.Close();
-                IsConnected = false;
-                if (allowFeedback) FeedbackQ.Enqueue("Disconnected from " + ipAddress + ":" + port);
+                if (IsConnected)
+                {
+                    IsConnected = false;
+                    if (allowFeedback) FeedbackQ.Enqueue("Disconnected from " + ipAddress + ":" + port);
+                }
             }
-            cancellationToken.WaitHandle.WaitOne(30000);//wait for a bit then try again
-            //if this fails it will be called again by MonitorCommsProcess until !isGo
+
+            // Wait before reconnection attempt, but allow cancellation
+            token.WaitHandle.WaitOne(30000);
         }
-    
+
     }
 
 
